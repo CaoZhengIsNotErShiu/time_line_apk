@@ -1,6 +1,7 @@
 package com.sc.per.time_line;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
@@ -10,8 +11,12 @@ import android.view.animation.ScaleAnimation;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import com.sc.per.time_line.activity.GuideActivity;
+import com.sc.per.time_line.utils.CacheUtils;
+
 public class SplashActivity extends Activity {
 
+    public static final String START_MAIN = "start_main";
     private RelativeLayout splash_root;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,7 +71,18 @@ public class SplashActivity extends Activity {
          */
         @Override
         public void onAnimationEnd(Animation animation) {
-            Toast.makeText(SplashActivity.this,"星河清梦欢迎您 · " ,Toast.LENGTH_LONG ).show();
+            //判断是否进入过主界面
+            boolean flag = CacheUtils.getBoolean(SplashActivity.this, START_MAIN);
+            if (flag){
+
+            }else{
+                //未进入，进入引导界面
+                Intent i = new Intent(SplashActivity.this,GuideActivity.class);
+                startActivity(i);
+            }
+            //关闭splash页面
+            finish();
+//            Toast.makeText(SplashActivity.this,"星河清梦欢迎您 · " ,Toast.LENGTH_LONG ).show();
         }
 
         @Override
