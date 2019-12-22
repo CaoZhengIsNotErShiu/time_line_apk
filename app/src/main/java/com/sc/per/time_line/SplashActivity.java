@@ -12,6 +12,7 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.sc.per.time_line.activity.GuideActivity;
+import com.sc.per.time_line.activity.MainActivity;
 import com.sc.per.time_line.utils.CacheUtils;
 
 public class SplashActivity extends Activity {
@@ -74,6 +75,8 @@ public class SplashActivity extends Activity {
             //判断是否进入过主界面
             boolean flag = CacheUtils.getBoolean(SplashActivity.this, START_MAIN);
             if (flag){
+                //2.跳转到主界面
+                startActivity(new Intent(SplashActivity.this, MainActivity.class));
 
             }else{
                 //未进入，进入引导界面
