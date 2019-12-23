@@ -1,14 +1,36 @@
 package com.sc.per.time_line.activity;
 
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+import android.widget.Toast;
 
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 import com.jeremyfeinstein.slidingmenu.lib.app.SlidingFragmentActivity;
+import com.sc.per.time_line.Fragement.ContentFragment;
+import com.sc.per.time_line.Fragement.LeftMenuFragment;
 import com.sc.per.time_line.R;
+import com.sc.per.time_line.adapter.ArticleAdapter;
+import com.sc.per.time_line.entity.Article;
 import com.sc.per.time_line.utils.DensityUtil;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends SlidingFragmentActivity {
 
+    public static final String LEFT_MENU_TAG = "left_menu_tag";
+    public static final String MAIN_ACTIVITY = "main_activity";
+
+    private String[] data = {"随笔", "日记", "展示", "前端", "后端", "liunx", "其他",
+            "留言","版本"};
+
+
+    private ListView listView_mian;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,8 +63,26 @@ public class MainActivity extends SlidingFragmentActivity {
         //设置滑动时拖拽效果
         slidingMenu.setBehindScrollScale(0);
 
-
-
+        //初始化数据。视图
+        initFragment();
 
     }
+
+    /**
+     * 初始数据
+     */
+    private void initFragment() {
+        //1.得到FragmentManger
+        FragmentManager manager = getSupportFragmentManager();
+        //2.开启事务
+        FragmentTransaction ft = manager.beginTransaction();
+        //3.替换数据
+        ft.replace(R.id.left_menu_activity, new LeftMenuFragment(), LEFT_MENU_TAG);
+        ft.replace(R.id.main_activity, new ContentFragment(), MAIN_ACTIVITY);
+        //4.提交
+        ft.commit();
+    }
+
+
+
 }
