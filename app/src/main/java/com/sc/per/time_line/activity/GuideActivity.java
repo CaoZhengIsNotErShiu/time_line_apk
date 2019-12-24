@@ -26,7 +26,6 @@ import java.util.ArrayList;
  */
 public class GuideActivity extends Activity {
 
-
     private ViewPager guide_viewpager;
     private Button guide_btn_start_main;
     private LinearLayout guide_ll_point_group;

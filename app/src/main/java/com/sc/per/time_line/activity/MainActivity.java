@@ -1,25 +1,21 @@
 package com.sc.per.time_line.activity;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 import com.jeremyfeinstein.slidingmenu.lib.app.SlidingFragmentActivity;
 import com.sc.per.time_line.Fragement.ContentFragment;
 import com.sc.per.time_line.Fragement.LeftMenuFragment;
 import com.sc.per.time_line.R;
-import com.sc.per.time_line.adapter.ArticleAdapter;
-import com.sc.per.time_line.entity.Article;
+import com.sc.per.time_line.utils.BarUtils;
 import com.sc.per.time_line.utils.DensityUtil;
 
-import java.util.ArrayList;
-import java.util.List;
+import org.xutils.x;
 
 public class MainActivity extends SlidingFragmentActivity {
 
@@ -34,7 +30,8 @@ public class MainActivity extends SlidingFragmentActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        //隐藏底部按钮
+        BarUtils.hideBottomUIMenu(this);
         //1.设置主页面
         setContentView(R.layout.activity_main);
 
@@ -82,6 +79,8 @@ public class MainActivity extends SlidingFragmentActivity {
         //4.提交
         ft.commit();
     }
+
+
 
 
 
