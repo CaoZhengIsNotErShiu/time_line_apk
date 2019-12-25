@@ -22,14 +22,16 @@ public class MainActivity extends SlidingFragmentActivity {
     public static final String LEFT_MENU_TAG = "left_menu_tag";
     public static final String MAIN_ACTIVITY = "main_activity";
 
-    private String[] data = {"随笔", "日记", "展示", "前端", "后端", "liunx", "其他",
-            "留言","版本"};
-
-
-    private ListView listView_mian;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //初始化菜單
+        initSlidingMenu();
+        //初始化数据。视图
+        initFragment();
+    }
+
+    private void initSlidingMenu() {
         //隐藏底部按钮
         BarUtils.hideBottomUIMenu(this);
         //1.设置主页面
@@ -59,10 +61,6 @@ public class MainActivity extends SlidingFragmentActivity {
 
         //设置滑动时拖拽效果
         slidingMenu.setBehindScrollScale(0);
-
-        //初始化数据。视图
-        initFragment();
-
     }
 
     /**

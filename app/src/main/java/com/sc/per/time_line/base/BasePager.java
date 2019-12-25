@@ -2,8 +2,12 @@ package com.sc.per.time_line.base;
 
 import android.content.Context;
 import android.view.View;
+import android.widget.FrameLayout;
+import android.widget.ImageButton;
+import android.widget.TextView;
 
 import com.sc.per.time_line.R;
+
 
 /**
  * 公共类
@@ -19,11 +23,26 @@ public class BasePager {
      * 视图
      * @param context
      */
-    public View view;
+    public View root_view;
 
+    /**
+     * 显示标题
+     */
+    public TextView tv_View;
+
+    /**
+     * 菜单
+     */
+    public ImageButton imageButton;
+
+    /**
+     * 子页面
+     */
+    public FrameLayout frameLayout;
 
     public BasePager(Context context){
         this.context = context;
+        root_view = initView();
     }
 
     /**
@@ -31,9 +50,12 @@ public class BasePager {
      *
      * @return
      */
-    public View initView(){
+    private View initView(){
         //公共页面
-        View view = View.inflate(context, R.layout.base_pager , null);
+        View view = View.inflate(context,R.layout.base_pager,null);
+        tv_View =  view.findViewById(R.id.iv_title);
+        imageButton =  view.findViewById(R.id.ib_menu);
+        frameLayout =  view.findViewById(R.id.fl_content);
         return view;
     }
 

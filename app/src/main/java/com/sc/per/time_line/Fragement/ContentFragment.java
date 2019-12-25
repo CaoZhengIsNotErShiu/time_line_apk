@@ -3,31 +3,33 @@ package com.sc.per.time_line.Fragement;
 
 import android.support.v4.view.ViewPager;
 import android.view.View;
-import android.widget.ListView;
 import android.widget.RadioGroup;
 
+import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 import com.sc.per.time_line.R;
+import com.sc.per.time_line.activity.MainActivity;
+import com.sc.per.time_line.adapter.ContentFragmentAdapter;
 import com.sc.per.time_line.base.BaseFragment;
-import com.sc.per.time_line.entity.Article;
+import com.sc.per.time_line.base.BasePager;
+import com.sc.per.time_line.page.HomePager;
+import com.sc.per.time_line.page.SettingPager;
+import com.sc.per.time_line.view.NoScrollPager;
 
 import org.xutils.view.annotation.ViewInject;
 import org.xutils.x;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class ContentFragment extends BaseFragment {
 
-    private List<Article> arts = new ArrayList<>();
-    
-    private ListView listView_mian;
-
     @ViewInject(R.id.viewpager)
-    private ViewPager viewPager;
+    private NoScrollPager viewPager;
     //底部导航
     @ViewInject(R.id.rg_main)
     private RadioGroup rg_main;
-    
+
+    private ArrayList<BasePager> pagers;
+
     @Override
     public View initView() {
 
@@ -40,35 +42,79 @@ public class ContentFragment extends BaseFragment {
     @Override
     public void initData() {
         super.initData();
+        pagers = new ArrayList<>();
+        pagers.add(new HomePager(context));
+        pagers.add(new SettingPager(context));
+
+        //设置viewpager的适配器
+        viewPager.setAdapter(new ContentFragmentAdapter(pagers));
+
+        //底部导航点击事件
+        rg_main.setOnCheckedChangeListener(new MyOnCheckedChangeListener());
+
+        //监听某个页面被加载
+        viewPager.addOnPageChangeListener(new MyOnPageChangeListener());
         //设置默认选中首页
         rg_main.check(R.id.rb_btn);
-        //主页数据初始化
-//        init();
-//        ArticleAdapter list_main = new ArticleAdapter(context, R.layout.article_item, arts);
-//        listView_mian.setAdapter(list_main);
-        //点击事件
-//        listView_mian.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                System.out.println("当前点："+ position);
-//                Article article = arts.get(position);
-//                Toast.makeText(context, article.getUserName() , Toast.LENGTH_LONG).show();
-//            }
-//        });
+        //初始化首页第一次加载数据
+        BasePager basePager = pagers.get(0);
+        basePager.initData();
+
+    }
+
+    class MyOnPageChangeListener implements ViewPager.OnPageChangeListener {
+
+        @Override
+        public void onPageScrolled(int i, float v, int i1) {
+
+        }
+
+        /**
+         * 当某个页面被选中，回调
+         * @param i
+         */
+        @Override
+        public void onPageSelected(int i) {
+            BasePager basePager = pagers.get(i);
+            basePager.initData();
+        }
+
+        @Override
+        public void onPageScrollStateChanged(int i) {
+
+        }
+    }
+
+    class MyOnCheckedChangeListener implements RadioGroup.OnCheckedChangeListener{
+        @Override
+        public void onCheckedChanged(RadioGroup group, int checkedId) {
+            switch (checkedId){
+                case R.id.rb_btn:
+                    viewPager.setCurrentItem(0);
+                    isEnableSlidingMenu(SlidingMenu.TOUCHMODE_FULLSCREEN);
+                    break;
+                case R.id.news_btn:
+                    break;
+                case R.id.author_btn:
+                    break;
+                case R.id.step_btn:
+                    viewPager.setCurrentItem(1,false);
+                    isEnableSlidingMenu(SlidingMenu.TOUCHMODE_NONE);
+                    break;
+            }
+        }
+
+
     }
 
     /**
-     * 初始化数据
+     * 根據傳入參數設置是否讓SlidingMenu可以滑動
      */
-    private void init() {
-        arts.add(new Article("暹罗猫", R.drawable.wifi01));
-        arts.add(new Article("布偶猫", R.drawable.wifi02));
-        arts.add(new Article("苏格兰折耳猫", R.drawable.wifi03));
-        arts.add(new Article("暹罗猫", R.drawable.wifi01));
-        arts.add(new Article("布偶猫", R.drawable.wifi02));
-        arts.add(new Article("苏格兰折耳猫", R.drawable.wifi03));
-        arts.add(new Article("暹罗猫", R.drawable.wifi01));
-        arts.add(new Article("布偶猫", R.drawable.wifi02));
-        arts.add(new Article("苏格兰折耳猫", R.drawable.wifi03));
+    private void isEnableSlidingMenu(int touchModel) {
+        MainActivity mainActivity  = (MainActivity) context;
+        mainActivity.getSlidingMenu().setTouchModeAbove(touchModel);
     }
+
+
+
 }
