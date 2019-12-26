@@ -1,11 +1,9 @@
 package com.sc.per.time_line.activity;
 
-import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.view.View;
-import android.widget.ListView;
 
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 import com.jeremyfeinstein.slidingmenu.lib.app.SlidingFragmentActivity;
@@ -15,7 +13,6 @@ import com.sc.per.time_line.R;
 import com.sc.per.time_line.utils.BarUtils;
 import com.sc.per.time_line.utils.DensityUtil;
 
-import org.xutils.x;
 
 public class MainActivity extends SlidingFragmentActivity {
 
@@ -76,6 +73,16 @@ public class MainActivity extends SlidingFragmentActivity {
         ft.replace(R.id.main_activity, new ContentFragment(), MAIN_ACTIVITY);
         //4.提交
         ft.commit();
+    }
+
+    /**
+     * 得到左侧菜单
+     * @return
+     */
+    public Fragment getLeftMenuFragment(){
+        //1.得到FragmentManger
+        FragmentManager manager = getSupportFragmentManager();
+        return manager.findFragmentByTag(LEFT_MENU_TAG);
     }
 
 

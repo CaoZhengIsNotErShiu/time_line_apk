@@ -7,6 +7,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.sc.per.time_line.R;
+import com.sc.per.time_line.activity.MainActivity;
 
 
 /**
@@ -56,6 +57,14 @@ public class BasePager {
         tv_View =  view.findViewById(R.id.iv_title);
         imageButton =  view.findViewById(R.id.ib_menu);
         frameLayout =  view.findViewById(R.id.fl_content);
+        imageButton.setVisibility(View.VISIBLE);
+        imageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MainActivity mainActivity = (MainActivity) context;
+                mainActivity.getSlidingMenu().toggle();
+            }
+        });
         return view;
     }
 

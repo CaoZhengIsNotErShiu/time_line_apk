@@ -47,7 +47,7 @@ public class ArticleAdapter extends ArrayAdapter<Article> {
             viewHolder = (ViewHolder) view.getTag();//取出
         }
 
-        viewHolder.image.setImageResource(cat.getImage());
+//        viewHolder.image.setImageResource(cat.getImage());
         viewHolder.name.setText(cat.getUserName());
         return view;
     }
