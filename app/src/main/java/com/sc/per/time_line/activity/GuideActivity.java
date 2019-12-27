@@ -47,7 +47,6 @@ public class GuideActivity extends Activity {
         guide_ll_point_group = findViewById(R.id.guide_ll_point_group);
         guide_iv_red_point =  findViewById(R.id.guide_iv_red_point);
 
-
         //图片数据
         int[] ids = new int[]{
                 R.drawable.guide1,

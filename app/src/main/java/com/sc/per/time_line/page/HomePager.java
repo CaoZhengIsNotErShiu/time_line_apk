@@ -18,6 +18,9 @@ import org.xutils.common.Callback;
 import org.xutils.http.RequestParams;
 import org.xutils.x;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * 主页
  */
@@ -38,13 +41,14 @@ public class HomePager extends BasePager {
 
         //2.获取数据
         TextView t_View = new TextView(context);
-        t_View.setGravity(Gravity.CENTER);
+
         t_View.setTextColor(Color.RED);
         t_View.setTextSize(20);
         //3.将子视图添加到BasePager的FrameLayout中
         frameLayout.addView(t_View);
         //4.绑定数据
         t_View.setText("主页数据1");
+        t_View.setGravity(Gravity.CENTER);
 
 
         //聯網請求
@@ -61,7 +65,6 @@ public class HomePager extends BasePager {
         x.http().post(params, new Callback.CommonCallback<String>() {
             @Override
             public void onSuccess(String result) {
-                System.out.println("数据："+result);
                 processData(result);
             }
 
@@ -89,11 +92,17 @@ public class HomePager extends BasePager {
     private void processData(String json) {
 
         MenuBean result = parsedJson(json);
-
+        List<String> menus = new ArrayList<>();
+        for (int i = 0; i < result.getData().size() ; i++) {
+            for (int j = 0; j < result.getData().get(i).getChildren().size(); j++) {
+                String menuText = result.getData().get(i).getChildren().get(j).getMenuText();
+                menus.add(menuText);
+            }
+        }
         MainActivity activity = (MainActivity) context;
         LeftMenuFragment leftMenuFragment = (LeftMenuFragment) activity.getLeftMenuFragment();
         //把数据传递给左侧菜单
-        leftMenuFragment.setData(result.getData());
+        leftMenuFragment.setData(menus);
 
     }
 

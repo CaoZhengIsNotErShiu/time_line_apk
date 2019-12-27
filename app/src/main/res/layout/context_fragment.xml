@@ -19,26 +19,36 @@
 
         <RadioButton
             android:id="@+id/rb_btn"
-            android:text="主页"
+            android:text="首页"
             android:drawableTop="@drawable/rb_home_drawable_selector"
             style="@style/bottom_style_tag"
             />
         <RadioButton
             android:id="@+id/news_btn"
-            android:text="主页"
-            android:drawableTop="@drawable/rb_home_drawable_selector"
+            android:text="会员"
+            android:drawableTop="@drawable/rb_home_drawable_vip_selector"
             style="@style/bottom_style_tag"
             />
         <RadioButton
+            android:id="@+id/editor_btn"
+            android:drawableTop="@drawable/rb_home_drawable_editor_selector"
+            android:button="@null"
+            android:paddingTop="14dp"
+            android:layout_gravity="center_vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            />
+        <RadioButton
             android:id="@+id/author_btn"
-            android:text="主页"
-            android:drawableTop="@drawable/rb_home_drawable_selector"
+            android:text="通知"
+            android:drawableTop="@drawable/rb_home_drawable_inform_selector"
             style="@style/bottom_style_tag"
             />
         <RadioButton
             android:id="@+id/step_btn"
-            android:text="设置"
-            android:drawableTop="@drawable/rb_home_drawable_selector"
+            android:text="我的"
+            android:drawableTop="@drawable/rb_home_drawable_mine_selector"
             style="@style/bottom_style_tag"
             />
     </RadioGroup>

@@ -15,6 +15,7 @@ import com.sc.per.time_line.base.BaseFragment;
 import com.sc.per.time_line.entity.MenuBean;
 import com.sc.per.time_line.utils.DensityUtil;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -25,7 +26,7 @@ public class LeftMenuFragment extends BaseFragment {
 
 
     private ListView listView;
-    private List<MenuBean.DataBean> data;
+    private List<String> data;
     private LeftMenuFragmentAdapter adapter;
 
     /**
@@ -67,7 +68,7 @@ public class LeftMenuFragment extends BaseFragment {
      * 接收数据
      * @param data
      */
-    public void setData(List<MenuBean.DataBean> data) {
+    public void setData(List<String> data) {
         this.data = data;
         adapter = new LeftMenuFragmentAdapter();
         //设置适配器
@@ -88,7 +89,7 @@ public class LeftMenuFragment extends BaseFragment {
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             TextView textView = (TextView) View.inflate(context, R.layout.left_item_menu ,null );
-            textView.setText(data.get(position).getMenuText());
+            textView.setText(data.get(position));
             textView.setEnabled(prePosition == position);
             return textView;
         }

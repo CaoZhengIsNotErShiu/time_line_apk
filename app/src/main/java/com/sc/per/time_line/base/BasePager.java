@@ -56,6 +56,7 @@ public class BasePager {
         View view = View.inflate(context,R.layout.base_pager,null);
         tv_View =  view.findViewById(R.id.iv_title);
         imageButton =  view.findViewById(R.id.ib_menu);
+
         frameLayout =  view.findViewById(R.id.fl_content);
         imageButton.setVisibility(View.VISIBLE);
         imageButton.setOnClickListener(new View.OnClickListener() {

@@ -11,8 +11,11 @@ import com.sc.per.time_line.activity.MainActivity;
 import com.sc.per.time_line.adapter.ContentFragmentAdapter;
 import com.sc.per.time_line.base.BaseFragment;
 import com.sc.per.time_line.base.BasePager;
+import com.sc.per.time_line.page.EditorPager;
 import com.sc.per.time_line.page.HomePager;
+import com.sc.per.time_line.page.InformPager;
 import com.sc.per.time_line.page.SettingPager;
+import com.sc.per.time_line.page.VipPager;
 import com.sc.per.time_line.view.NoScrollPager;
 
 import org.xutils.view.annotation.ViewInject;
@@ -44,6 +47,9 @@ public class ContentFragment extends BaseFragment {
         super.initData();
         pagers = new ArrayList<>();
         pagers.add(new HomePager(context));
+        pagers.add(new VipPager(context));
+        pagers.add(new EditorPager(context));
+        pagers.add(new InformPager(context));
         pagers.add(new SettingPager(context));
 
         //设置viewpager的适配器
@@ -51,7 +57,6 @@ public class ContentFragment extends BaseFragment {
 
         //底部导航点击事件
         rg_main.setOnCheckedChangeListener(new MyOnCheckedChangeListener());
-
         //监听某个页面被加载
         viewPager.addOnPageChangeListener(new MyOnPageChangeListener());
         //设置默认选中首页
@@ -94,11 +99,19 @@ public class ContentFragment extends BaseFragment {
                     isEnableSlidingMenu(SlidingMenu.TOUCHMODE_FULLSCREEN);
                     break;
                 case R.id.news_btn:
+                    viewPager.setCurrentItem(1);
+                    isEnableSlidingMenu(SlidingMenu.TOUCHMODE_NONE);
+                    break;
+                case R.id.editor_btn:
+                    viewPager.setCurrentItem(2);
+                    isEnableSlidingMenu(SlidingMenu.TOUCHMODE_NONE);
                     break;
                 case R.id.author_btn:
+                    viewPager.setCurrentItem(3);
+                    isEnableSlidingMenu(SlidingMenu.TOUCHMODE_NONE);
                     break;
                 case R.id.step_btn:
-                    viewPager.setCurrentItem(1,false);
+                    viewPager.setCurrentItem(4,false);
                     isEnableSlidingMenu(SlidingMenu.TOUCHMODE_NONE);
                     break;
             }

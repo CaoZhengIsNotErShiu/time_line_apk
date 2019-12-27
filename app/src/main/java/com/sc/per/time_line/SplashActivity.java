@@ -3,22 +3,40 @@ package com.sc.per.time_line;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.view.Gravity;
+import android.view.View;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
 import android.view.animation.RotateAnimation;
 import android.view.animation.ScaleAnimation;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.sc.per.time_line.activity.GuideActivity;
 import com.sc.per.time_line.activity.MainActivity;
 import com.sc.per.time_line.utils.CacheUtils;
 
+import org.xutils.view.annotation.ViewInject;
+
+import java.util.Timer;
+import java.util.TimerTask;
+
+/**
+ * 进场动画
+ */
 public class SplashActivity extends Activity {
 
     public static final String START_MAIN = "start_main";
     private RelativeLayout splash_root;
+
+    private int recLen = 3;//跳过倒计时提示5秒
+
+    private TextView tv;
+    Timer timer = new Timer();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,12 +63,46 @@ public class SplashActivity extends Activity {
         set.addAnimation(scaleAnimation);
         set.addAnimation(rotateAnimation);
         set.setDuration(2000);
+        //倒计时跳过 按钮
+        tv = findViewById(R.id.tv);
 
         splash_root.startAnimation(set);
+
+        tv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(SplashActivity.this, MainActivity.class));
+                finish();
+            }
+        });
+
 
         //监听接口
         set.setAnimationListener(new MyAnimationLister());
     }
+
+
+
+    TimerTask task = new TimerTask() {
+        @Override
+        public void run() {
+            runOnUiThread(new Runnable() { // UI thread
+                @Override
+                public void run() {
+                    recLen--;
+                    tv.setText("跳过 " + recLen);
+                    if (recLen < 0) {
+                        timer.cancel();
+                        tv.setVisibility(View.GONE);//倒计时到0隐藏字体
+                        startActivity(new Intent(SplashActivity.this, MainActivity.class));
+                        finish();
+                    }
+                }
+            });
+        }
+    };
+
+
 
     /**
      * 动画播放监听接口
@@ -75,16 +127,16 @@ public class SplashActivity extends Activity {
             //判断是否进入过主界面
             boolean flag = CacheUtils.getBoolean(SplashActivity.this, START_MAIN);
             if (flag){
-                //2.跳转到主界面
-                startActivity(new Intent(SplashActivity.this, MainActivity.class));
-
+                //2.定义倒数按钮事件
+                timer.schedule(task, 1000, 1000);//等待时间一秒，停顿时间一秒
             }else{
                 //未进入，进入引导界面
                 Intent i = new Intent(SplashActivity.this,GuideActivity.class);
                 startActivity(i);
+                //关闭splash页面
+                finish();
             }
-            //关闭splash页面
-            finish();
+
 //            Toast.makeText(SplashActivity.this,"星河清梦欢迎您 · " ,Toast.LENGTH_LONG ).show();
         }
 

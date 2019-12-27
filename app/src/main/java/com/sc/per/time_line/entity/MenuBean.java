@@ -42,6 +42,7 @@ public class MenuBean {
         private String menuUrl;
         private String parentId;
         private String menuLevel;
+
         private String createTime;
         private List<ChildrenBean> children;
 
@@ -99,6 +100,19 @@ public class MenuBean {
 
         public void setChildren(List<ChildrenBean> children) {
             this.children = children;
+        }
+
+        @Override
+        public String toString() {
+            return "DataBean{" +
+                    "menuId='" + menuId + '\'' +
+                    ", menuText='" + menuText + '\'' +
+                    ", menuUrl='" + menuUrl + '\'' +
+                    ", parentId='" + parentId + '\'' +
+                    ", menuLevel='" + menuLevel + '\'' +
+                    ", createTime='" + createTime + '\'' +
+                    ", children=" + children +
+                    '}';
         }
 
         public static class ChildrenBean {
