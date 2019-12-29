@@ -12,10 +12,9 @@ import android.widget.TextView;
 import com.sc.per.time_line.R;
 import com.sc.per.time_line.activity.MainActivity;
 import com.sc.per.time_line.base.BaseFragment;
-import com.sc.per.time_line.entity.MenuBean;
+import com.sc.per.time_line.page.HomePager;
 import com.sc.per.time_line.utils.DensityUtil;
 
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -52,10 +51,23 @@ public class LeftMenuFragment extends BaseFragment {
                 //2.把左侧菜单关闭
                 MainActivity mainActivity = (MainActivity) context;
                 mainActivity.getSlidingMenu().toggle();
-                //3.切换到对应页面
+                //3.切换到对应页面，详情页面，前端，后端 ，liunx 等
+                switchPager(prePosition);
+
             }
         });
         return listView;
+    }
+
+    /**
+     * 根据不同位置，切换不同左侧菜单详情页面
+     * @param position
+     */
+    private void switchPager(int position) {
+        MainActivity mainActivity = (MainActivity) context;
+        ContentFragment contentFragment = mainActivity.getContentFragment();
+        HomePager homePager = contentFragment.getFrontPager();
+        homePager.switchPager(position);
     }
 
 
@@ -74,8 +86,10 @@ public class LeftMenuFragment extends BaseFragment {
         //设置适配器
         listView.setAdapter(adapter);
 
-    }
+        //设置默认页面
+        switchPager(prePosition);
 
+    }
 
 
     //菜单适配器

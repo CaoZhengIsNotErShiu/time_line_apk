@@ -67,6 +67,11 @@ public class ContentFragment extends BaseFragment {
 
     }
 
+    public HomePager getFrontPager(){
+        return (HomePager) pagers.get(0);
+    }
+
+
     class MyOnPageChangeListener implements ViewPager.OnPageChangeListener {
 
         @Override
@@ -127,6 +132,7 @@ public class ContentFragment extends BaseFragment {
         MainActivity mainActivity  = (MainActivity) context;
         mainActivity.getSlidingMenu().setTouchModeAbove(touchModel);
     }
+
 
 
 

@@ -86,7 +86,13 @@ public class MainActivity extends SlidingFragmentActivity {
     }
 
 
-
-
-
+    /**
+     * 左侧菜单详情页面
+     * @return
+     */
+    public ContentFragment getContentFragment() {
+        //1.得到FragmentManger
+        FragmentManager manager = getSupportFragmentManager();
+        return (ContentFragment) manager.findFragmentByTag(MAIN_ACTIVITY);
+    }
 }

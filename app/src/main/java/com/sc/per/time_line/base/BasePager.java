@@ -30,6 +30,7 @@ public class BasePager {
      * 显示标题
      */
     public TextView tv_View;
+//    public SearchView tv_View;
 
     /**
      * 菜单

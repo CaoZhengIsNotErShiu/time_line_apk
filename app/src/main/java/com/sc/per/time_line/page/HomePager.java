@@ -2,7 +2,7 @@ package com.sc.per.time_line.page;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.view.Gravity;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
 
@@ -10,8 +10,16 @@ import com.google.gson.Gson;
 import com.sc.per.time_line.Fragement.LeftMenuFragment;
 import com.sc.per.time_line.activity.MainActivity;
 import com.sc.per.time_line.base.BasePager;
-import com.sc.per.time_line.entity.HttpResult;
+import com.sc.per.time_line.base.MenuDetailBasePager;
 import com.sc.per.time_line.entity.MenuBean;
+import com.sc.per.time_line.menudetailpager.AfterPager;
+import com.sc.per.time_line.menudetailpager.DiaryPager;
+import com.sc.per.time_line.menudetailpager.EssaysPager;
+import com.sc.per.time_line.menudetailpager.FrontPager;
+import com.sc.per.time_line.menudetailpager.LiunxPager;
+import com.sc.per.time_line.menudetailpager.OtherPager;
+import com.sc.per.time_line.menudetailpager.ShowPager;
+import com.sc.per.time_line.utils.CacheUtils;
 import com.sc.per.time_line.utils.Constants;
 
 import org.xutils.common.Callback;
@@ -24,12 +32,22 @@ import java.util.List;
 /**
  * 主页
  */
+
 public class HomePager extends BasePager {
 
+
+    /**
+     * 左侧菜单详情页面
+     */
+    private ArrayList<MenuDetailBasePager> menuDetailBasePagers;
+
+    private List<String> menus;
 
     public HomePager(Context context) {
         super(context);
     }
+
+
 
 
 
@@ -41,30 +59,35 @@ public class HomePager extends BasePager {
 
         //2.获取数据
         TextView t_View = new TextView(context);
-
         t_View.setTextColor(Color.RED);
         t_View.setTextSize(20);
         //3.将子视图添加到BasePager的FrameLayout中
         frameLayout.addView(t_View);
         //4.绑定数据
         t_View.setText("主页数据1");
-        t_View.setGravity(Gravity.CENTER);
 
 
+        //获取缓存菜单数据
+        String menuSp = CacheUtils.getString(context,Constants.TIME_LINE_MENU_URL);
+        if (!TextUtils.isEmpty(menuSp)){
+            processData(menuSp);
+        }
         //聯網請求
         getDataFromNet();
+
+
     }
 
     //1.使用xUtils3請求數據
     private void getDataFromNet() {
         RequestParams params = new RequestParams(Constants.TIME_LINE_MENU_URL);
-//        params.addQueryStringParameter("userName","虹猫");
-//        params.addQueryStringParameter("index","index");
-//        params.addQueryStringParameter("pageNum","1");
-//        System.out.println(params);
+
         x.http().post(params, new Callback.CommonCallback<String>() {
             @Override
             public void onSuccess(String result) {
+                //1.缓存菜单数据
+                CacheUtils.putString(context,Constants.TIME_LINE_MENU_URL,result);
+                //联网请求数据
                 processData(result);
             }
 
@@ -92,7 +115,7 @@ public class HomePager extends BasePager {
     private void processData(String json) {
 
         MenuBean result = parsedJson(json);
-        List<String> menus = new ArrayList<>();
+        menus = new ArrayList<>();
         for (int i = 0; i < result.getData().size() ; i++) {
             for (int j = 0; j < result.getData().get(i).getChildren().size(); j++) {
                 String menuText = result.getData().get(i).getChildren().get(j).getMenuText();
@@ -101,6 +124,17 @@ public class HomePager extends BasePager {
         }
         MainActivity activity = (MainActivity) context;
         LeftMenuFragment leftMenuFragment = (LeftMenuFragment) activity.getLeftMenuFragment();
+
+        //左侧菜单详情页面
+        menuDetailBasePagers = new ArrayList<>();
+        menuDetailBasePagers.add(new EssaysPager(context,menus));
+        menuDetailBasePagers.add(new DiaryPager(context));
+        menuDetailBasePagers.add(new ShowPager(context));
+        menuDetailBasePagers.add(new FrontPager(context));
+        menuDetailBasePagers.add(new AfterPager(context));
+        menuDetailBasePagers.add(new LiunxPager(context));
+        menuDetailBasePagers.add(new OtherPager(context));
+
         //把数据传递给左侧菜单
         leftMenuFragment.setData(menus);
 
@@ -118,4 +152,19 @@ public class HomePager extends BasePager {
     }
 
 
+    /**
+     * 根据位置，切换详情页面
+     * @param position
+     */
+    public void switchPager(int position) {
+        //1.标题
+        tv_View.setText(menus.get(position));
+        //2.移除之前内容
+        frameLayout.removeAllViews();
+        //3.替换新内容
+        MenuDetailBasePager menuDetailBasePager = menuDetailBasePagers.get(position);
+        View rootView = menuDetailBasePager.rootView;
+        menuDetailBasePager.initData();//初始化数据
+        frameLayout.addView(rootView);
+    }
 }
