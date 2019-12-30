@@ -11,7 +11,9 @@ import android.widget.TextView;
 
 import com.sc.per.time_line.R;
 import com.sc.per.time_line.activity.MainActivity;
+import com.sc.per.time_line.adapter.LeftMenuFragmentAdapter;
 import com.sc.per.time_line.base.BaseFragment;
+import com.sc.per.time_line.entity.Menu;
 import com.sc.per.time_line.page.HomePager;
 import com.sc.per.time_line.utils.DensityUtil;
 
@@ -25,7 +27,7 @@ public class LeftMenuFragment extends BaseFragment {
 
 
     private ListView listView;
-    private List<String> data;
+    private List<Menu> data;
     private LeftMenuFragmentAdapter adapter;
 
     /**
@@ -36,7 +38,7 @@ public class LeftMenuFragment extends BaseFragment {
     @Override
     public View initView() {
         listView = new ListView(context);
-        listView.setPadding(0, DensityUtil.dip2px(context,40 ), 0,0 );
+        listView.setPadding(0, DensityUtil.dip2px(context, 40), 0, 0);
         listView.setDividerHeight(0);
         listView.setCacheColorHint(Color.TRANSPARENT);
         listView.setSelector(android.R.color.transparent);
@@ -61,6 +63,7 @@ public class LeftMenuFragment extends BaseFragment {
 
     /**
      * 根据不同位置，切换不同左侧菜单详情页面
+     *
      * @param position
      */
     private void switchPager(int position) {
@@ -78,46 +81,18 @@ public class LeftMenuFragment extends BaseFragment {
 
     /**
      * 接收数据
+     *
      * @param data
      */
-    public void setData(List<String> data) {
+    public void setData(List<Menu> data) {
         this.data = data;
-        adapter = new LeftMenuFragmentAdapter();
+        adapter = new LeftMenuFragmentAdapter(context, data, prePosition);
         //设置适配器
         listView.setAdapter(adapter);
-
         //设置默认页面
         switchPager(prePosition);
 
     }
 
 
-    //菜单适配器
-    class LeftMenuFragmentAdapter extends BaseAdapter{
-
-        @Override
-        public int getCount() {
-            return data.size();
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            TextView textView = (TextView) View.inflate(context, R.layout.left_item_menu ,null );
-            textView.setText(data.get(position));
-            textView.setEnabled(prePosition == position);
-            return textView;
-        }
-
-        @Override
-        public Object getItem(int position) {
-            return null;
-        }
-
-        @Override
-        public long getItemId(int position) {
-            return 0;
-        }
-
-
-    }
 }

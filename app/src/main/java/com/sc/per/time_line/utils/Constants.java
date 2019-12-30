@@ -9,7 +9,16 @@ public class Constants {
 
 //    public static final String TIME_LINE_MENU_URL ="http://10.8.1.240:8088/menu/getMenu";
 
-    public static final String TIME_LINE_MENU_URL ="https://www.ohhhs.cn/api/menu/getMenu";
+    //腾讯服务器
+    public static final String TIME_LINE_CLOUD_URL = "https://www.ohhhs.cn/api";
+
+    //菜单
+    public static final String TIME_LINE_MENU_URL = TIME_LINE_CLOUD_URL+"/menu/getMenu";
+
+    //根据菜单获取   userName&index=jour&pageNum=1
+    public static final String TIME_LINE_MENU_INFO_URL = TIME_LINE_CLOUD_URL+"/timelineIndex/queryAllTimeLineInfo";
+
+
 
 
 }

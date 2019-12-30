@@ -11,6 +11,7 @@ import com.sc.per.time_line.Fragement.LeftMenuFragment;
 import com.sc.per.time_line.activity.MainActivity;
 import com.sc.per.time_line.base.BasePager;
 import com.sc.per.time_line.base.MenuDetailBasePager;
+import com.sc.per.time_line.entity.Menu;
 import com.sc.per.time_line.entity.MenuBean;
 import com.sc.per.time_line.menudetailpager.AfterPager;
 import com.sc.per.time_line.menudetailpager.DiaryPager;
@@ -41,7 +42,7 @@ public class HomePager extends BasePager {
      */
     private ArrayList<MenuDetailBasePager> menuDetailBasePagers;
 
-    private List<String> menus;
+    private List<Menu> menus;
 
     public HomePager(Context context) {
         super(context);
@@ -119,7 +120,11 @@ public class HomePager extends BasePager {
         for (int i = 0; i < result.getData().size() ; i++) {
             for (int j = 0; j < result.getData().get(i).getChildren().size(); j++) {
                 String menuText = result.getData().get(i).getChildren().get(j).getMenuText();
-                menus.add(menuText);
+                String menuUrl = result.getData().get(i).getChildren().get(j).getMenuUrl();
+                Menu menu = new Menu();
+                menu.setMenu(menuText);
+                menu.setUrl(menuUrl);
+                menus.add(menu);
             }
         }
         MainActivity activity = (MainActivity) context;
@@ -137,7 +142,6 @@ public class HomePager extends BasePager {
 
         //把数据传递给左侧菜单
         leftMenuFragment.setData(menus);
-
     }
 
     /**
@@ -158,7 +162,7 @@ public class HomePager extends BasePager {
      */
     public void switchPager(int position) {
         //1.标题
-        tv_View.setText(menus.get(position));
+        tv_View.setText(menus.get(position).getMenu());
         //2.移除之前内容
         frameLayout.removeAllViews();
         //3.替换新内容

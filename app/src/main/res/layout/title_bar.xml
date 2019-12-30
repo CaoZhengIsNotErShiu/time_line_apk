@@ -7,32 +7,21 @@
 
         <TextView
             android:id="@+id/iv_title"
-            android:text="标题"
             android:textColor="@color/white"
             android:textSize="23sp"
             android:layout_centerInParent="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
-<!--        <SearchView-->
-<!--            android:queryHint="搜索"-->
-<!--            android:iconifiedByDefault="false"-->
-<!--            android:background="@color/query_title_bg"-->
-<!--            android:id="@+id/mSearchView"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content" />-->
-
-
-
         <ImageButton
             android:id="@+id/ib_menu"
-            android:src="@drawable/menu"
-            android:background="@color/transparent"
-            android:visibility="gone"
-            android:layout_marginLeft="8dp"
-            android:layout_centerVertical="true"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="8dp"
+            android:background="@android:color/transparent"
+            android:src="@drawable/menu"
+            android:visibility="gone" />
 </RelativeLayout>
 
 

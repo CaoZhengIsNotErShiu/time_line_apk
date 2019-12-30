@@ -5,6 +5,7 @@
     android:layout_height="match_parent"
     tools:context=".activity.MainActivity"
     android:orientation="vertical"
+    android:background="@color/white"
     android:id="@+id/main_activity">
 
 

@@ -4,9 +4,6 @@ import java.util.List;
 
 public class MenuBean {
 
-
-
-
     private int status;
     private Object msg;
     private List<DataBean> data;
