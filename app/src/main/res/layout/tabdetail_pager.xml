@@ -5,43 +5,10 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="180dp">
-
-        <android.support.v4.view.ViewPager
-            android:id="@+id/viewpager"
-            android:layout_width="match_parent"
-            android:layout_height="180dp"/>
-
-        <RelativeLayout
-            android:padding="5dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/lightslategray"
-            android:layout_alignParentBottom="true">
-            <TextView
-                android:id="@+id/tv_title"
-                android:layout_marginLeft="8dp"
-                android:layout_centerVertical="true"
-                android:text="彩票销售1846亿元"
-                android:textColor="@color/white"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-            <LinearLayout
-                android:id="@+id/ll_point_group"
-                android:orientation="horizontal"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:layout_marginRight="8dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-        </RelativeLayout>
-
-    </RelativeLayout>
-
     <ListView
         android:id="@+id/list_item"
+        android:cacheColorHint="@android:color/transparent"
+        android:divider="@null"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 </LinearLayout>

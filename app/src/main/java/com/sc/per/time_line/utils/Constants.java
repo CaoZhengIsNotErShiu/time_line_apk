@@ -12,6 +12,9 @@ public class Constants {
     //腾讯服务器
     public static final String TIME_LINE_CLOUD_URL = "https://www.ohhhs.cn/api";
 
+
+    public static final String TIME_LINE_CLOUD = "https://www.ohhhs.cn";
+
     //菜单
     public static final String TIME_LINE_MENU_URL = TIME_LINE_CLOUD_URL+"/menu/getMenu";
 
