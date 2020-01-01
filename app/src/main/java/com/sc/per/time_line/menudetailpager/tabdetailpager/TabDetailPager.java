@@ -8,7 +8,6 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
@@ -20,7 +19,7 @@ import com.sc.per.time_line.entity.Menu;
 import com.sc.per.time_line.utils.CacheUtils;
 import com.sc.per.time_line.utils.Constants;
 import com.sc.per.time_line.view.HorizontalScrollViewPager;
-
+import com.sc.per.time_line.view.RefreshListView;
 
 import org.xutils.common.Callback;
 import org.xutils.common.util.DensityUtil;
@@ -39,7 +38,7 @@ public class TabDetailPager extends MenuDetailBasePager {
     private HorizontalScrollViewPager viewpager;
     private TextView tv_title;
     private LinearLayout ll_point_group;
-    private ListView list_item;
+    private RefreshListView list_item;
 
     private Menu menu;
 
