@@ -1,4 +1,4 @@
-#Wed Jan 01 01:29:30 CST 2020
-base.0=C\:\\Users\\Administrator\\StudioProjects\\time_line_apk\\ViewPagerIndicator_sample\\build\\intermediates\\transforms\\dexMerger\\debug\\0
+#Thu Jan 02 11:54:42 CST 2020
+base.0=F\:\\Android\\time_line\\ViewPagerIndicator_sample\\build\\intermediates\\transforms\\dexMerger\\debug\\0
 path.0=classes.dex
 renamed.0=classes.dex

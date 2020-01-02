@@ -32,7 +32,7 @@ public class SplashActivity extends Activity {
     public static final String START_MAIN = "start_main";
     private RelativeLayout splash_root;
 
-    private int recLen = 3;//跳过倒计时提示5秒
+    private int recLen = 10;//跳过倒计时提示5秒
 
     private TextView tv;
     Timer timer = new Timer();
@@ -40,6 +40,16 @@ public class SplashActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        if (!this.isTaskRoot()) {
+            Intent mainIntent = getIntent();
+            String action = mainIntent.getAction();
+            if (mainIntent.hasCategory(Intent.CATEGORY_LAUNCHER) && action.equals(Intent.ACTION_MAIN)) {
+                finish();
+                return;
+            }
+        }
+
         setContentView(R.layout.activity_splash);
         splash_root =  findViewById(R.id.splash);
 
