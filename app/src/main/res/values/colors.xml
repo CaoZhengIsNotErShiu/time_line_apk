@@ -2,7 +2,6 @@
 <resources>
     <color name="Primary">#000000</color>
     <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
     <color name="ActionBarBackground">#00CAC3</color>
     <color name="query_title_bg">#CAC5C5</color>

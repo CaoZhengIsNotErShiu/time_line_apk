@@ -49,24 +49,11 @@ public class HomePager extends BasePager {
     }
 
 
-
-
-
     @Override
     public void initData() {
         super.initData();
         //1.设置标题
         tv_View.setText("主页");
-
-        //2.获取数据
-        TextView t_View = new TextView(context);
-        t_View.setTextColor(Color.RED);
-        t_View.setTextSize(20);
-        //3.将子视图添加到BasePager的FrameLayout中
-        frameLayout.addView(t_View);
-        //4.绑定数据
-        t_View.setText("主页数据1");
-
 
         //获取缓存菜单数据
         String menuSp = CacheUtils.getString(context,Constants.TIME_LINE_MENU_URL);
@@ -75,14 +62,11 @@ public class HomePager extends BasePager {
         }
         //聯網請求
         getDataFromNet();
-
-
     }
 
     //1.使用xUtils3請求數據
     private void getDataFromNet() {
         RequestParams params = new RequestParams(Constants.TIME_LINE_MENU_URL);
-
         x.http().post(params, new Callback.CommonCallback<String>() {
             @Override
             public void onSuccess(String result) {
@@ -154,7 +138,6 @@ public class HomePager extends BasePager {
         MenuBean result = gson.fromJson(json,MenuBean.class );
         return result;
     }
-
 
     /**
      * 根据位置，切换详情页面

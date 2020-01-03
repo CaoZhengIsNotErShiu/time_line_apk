@@ -23,6 +23,9 @@ import org.xutils.x;
 
 import java.util.ArrayList;
 
+/**
+ * 功能:主界面底部导航栏，切换，填充视图
+ */
 public class ContentFragment extends BaseFragment {
 
     @ViewInject(R.id.viewpager)
@@ -35,7 +38,7 @@ public class ContentFragment extends BaseFragment {
 
     @Override
     public View initView() {
-
+        //填充底部导航菜单
         View view = View.inflate(context, R.layout.context_fragment, null);
         //1.将视图注入到框架中，让ContentFragment和view关联
         x.view().inject(this,view);
@@ -46,6 +49,7 @@ public class ContentFragment extends BaseFragment {
     public void initData() {
         super.initData();
         pagers = new ArrayList<>();
+        //底部导航页面
         pagers.add(new HomePager(context));
         pagers.add(new VipPager(context));
         pagers.add(new EditorPager(context));
@@ -54,7 +58,6 @@ public class ContentFragment extends BaseFragment {
 
         //设置viewpager的适配器
         viewPager.setAdapter(new ContentFragmentAdapter(pagers));
-
         //底部导航点击事件
         rg_main.setOnCheckedChangeListener(new MyOnCheckedChangeListener());
         //监听某个页面被加载
@@ -71,12 +74,10 @@ public class ContentFragment extends BaseFragment {
         return (HomePager) pagers.get(0);
     }
 
-
     class MyOnPageChangeListener implements ViewPager.OnPageChangeListener {
 
         @Override
         public void onPageScrolled(int i, float v, int i1) {
-
         }
 
         /**
@@ -121,8 +122,6 @@ public class ContentFragment extends BaseFragment {
                     break;
             }
         }
-
-
     }
 
     /**

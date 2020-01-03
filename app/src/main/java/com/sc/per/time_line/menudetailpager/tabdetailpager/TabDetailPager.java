@@ -8,8 +8,8 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.sc.per.time_line.R;
@@ -20,7 +20,7 @@ import com.sc.per.time_line.entity.Menu;
 import com.sc.per.time_line.utils.CacheUtils;
 import com.sc.per.time_line.utils.Constants;
 import com.sc.per.time_line.view.HorizontalScrollViewPager;
-
+import com.sc.per.time_line.view.RefreshListView;
 
 import org.xutils.common.Callback;
 import org.xutils.common.util.DensityUtil;
@@ -39,7 +39,7 @@ public class TabDetailPager extends MenuDetailBasePager {
     private HorizontalScrollViewPager viewpager;
     private TextView tv_title;
     private LinearLayout ll_point_group;
-    private ListView list_item;
+    private RefreshListView list_item;
 
     private Menu menu;
 
@@ -75,7 +75,21 @@ public class TabDetailPager extends MenuDetailBasePager {
 
         //把顶部轮播图，以头的方式添加到listView中
         list_item.addHeaderView(topPager);
+
+        //设置监听
+        list_item.setOnRefreshListener(new MyOnRefreshListener());
         return view;
+    }
+
+    class MyOnRefreshListener implements RefreshListView.OnRefreshListener{
+
+        @Override
+        public void onPullDownRefresh() {
+            //1.下拉刷新
+            Toast.makeText(context,"下拉刷新被回调了:"+menu.getUrl(), Toast.LENGTH_SHORT ).show();
+
+            getMenuDetailByMenuUrl(menu.getUrl());
+        }
     }
 
     @Override
@@ -90,6 +104,7 @@ public class TabDetailPager extends MenuDetailBasePager {
 
     private void getMenuDetailByMenuUrl(final String url){
         RequestParams params = new RequestParams(Constants.TIME_LINE_MENU_INFO_URL);
+        params.setConnectTimeout(5000);
         params.addBodyParameter("index",url);
         params.addBodyParameter("pageNum","1");
         x.http().post(params, new Callback.CommonCallback<String>() {
@@ -100,10 +115,15 @@ public class TabDetailPager extends MenuDetailBasePager {
                 CacheUtils.putString(context,url,result);
                 //联网请求数据
                 processData(result);
+
+                //隐藏下拉刷新控件，更新时间，重写数据
+                list_item.onRefreshFinish(true);
             }
 
             @Override
             public void onError(Throwable ex, boolean isOnCallback) {
+                //隐藏下拉刷新控件，更新时间
+                list_item.onRefreshFinish(false);
 
             }
 
