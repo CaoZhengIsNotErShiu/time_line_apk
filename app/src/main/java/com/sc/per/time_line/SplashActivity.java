@@ -32,7 +32,7 @@ public class SplashActivity extends Activity {
     public static final String START_MAIN = "start_main";
     private RelativeLayout splash_root;
 
-    private int recLen = 10;//跳过倒计时提示5秒
+    private int recLen = 3;//跳过倒计时提示5秒
 
     private TextView tv;
     Timer timer = new Timer();
@@ -76,7 +76,6 @@ public class SplashActivity extends Activity {
             public void onClick(View v) {
                 startActivity(new Intent(SplashActivity.this, MainActivity.class));
                 finish();
-                task.cancel();
             }
         });
 
