@@ -1,86 +1,96 @@
 package com.sc.per.time_line.adapter;
 
-import android.content.Context;
-import android.content.Intent;
-import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
-import android.widget.Toast;
+import android.widget.ImageView;
 
 import com.sc.per.time_line.R;
-import com.sc.per.time_line.SplashActivity;
 import com.sc.per.time_line.activity.MainActivity;
-import com.sc.per.time_line.entity.Menu;
+import com.sc.per.time_line.entity.ItemBean;
 
 import java.util.List;
 
-public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.MyHolder> {
+public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
 
-    Context context;
-    private List<Menu> data;
-    private View inflater;
+    private List<ItemBean> mList = null;
+    private MainActivity mainActivity = null;
 
-    public RecyclerViewAdapter(Context context, List<Menu> data) {
-        this.context = context;
-        this.data = data;
+    public RecyclerViewAdapter(MainActivity mainActivity) {
+        this.mainActivity = mainActivity;
     }
 
-    @NonNull
+    public void setData(List<ItemBean> list) {
+        this.mList = list;
+        notifyDataSetChanged();
+    }
+
     @Override
-    public MyHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-        inflater = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.inform_item_pager, viewGroup, false);
-        MyHolder myHolder = new MyHolder(inflater);
-        return myHolder;
+    public int getItemViewType(int position) {
+        ItemBean itemBean = mList.get(position);
+        return itemBean.getType();
     }
 
-    /**
-     * 操作item
-     * @param myHolder
-     * @param i
-     */
     @Override
-    public void onBindViewHolder(@NonNull MyHolder myHolder, int i) {
-        //将数据和控件绑定
-        myHolder.textView.setText(data.get(i).getMenu());
-
-        final int pos = i;
-        myHolder.textView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(context ,"控件被点击：" + pos , Toast.LENGTH_SHORT ).show();
-            }
-        });
-
-        myHolder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(context ,"条目被点击：" + pos , Toast.LENGTH_SHORT ).show();
-                //v.getContext().startActivity(new Intent(context, MainActivity.class));
-            }
-        });
+    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        ViewHolder holder = null;
+        if (viewType == ItemBean.ITEM_PT) {
+            holder = new PtViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_layout_pt, parent, false));
+        } else if (viewType == ItemBean.ITEM_GG) {
+            holder = new GgViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_layout_gg, parent, false));
+        }
+        return holder;
     }
 
-    /**
-     * 条数
-     * @return
-     */
+    @Override
+    public void onBindViewHolder(ViewHolder holder, int position) {
+        int itemViewType = getItemViewType(position);
+        switch (itemViewType) {
+            case ItemBean.ITEM_GG:
+                GgViewHolder ggHolder = (GgViewHolder) holder;
+
+                mainActivity.setGGViewPosition(position, ggHolder.ggView);
+                break;
+            case ItemBean.ITEM_PT:
+
+                break;
+        }
+    }
+
     @Override
     public int getItemCount() {
-        return data.size();
+        return mList != null ? mList.size() : 0;
+    }
+
+    class ViewHolder extends RecyclerView.ViewHolder {
+
+        public ViewHolder(View itemView) {
+            super(itemView);
+        }
     }
 
     /**
-     * 初始化viewHolder控件
+     * 普通
      */
-    class MyHolder extends RecyclerView.ViewHolder{
-        TextView textView;
+    class PtViewHolder extends ViewHolder {
 
-        public MyHolder(@NonNull View itemView) {
+        public PtViewHolder(View itemView) {
             super(itemView);
-            textView = itemView.findViewById(R.id.text_view);
+        }
+    }
+
+    /**
+     * 广告
+     */
+    class GgViewHolder extends ViewHolder {
+        ImageView ggView;
+        View itemView;
+
+        public GgViewHolder(View itemView) {
+            super(itemView);
+            this.itemView = itemView;
+            ggView = itemView.findViewById(R.id.item_imageview);
         }
     }
 }

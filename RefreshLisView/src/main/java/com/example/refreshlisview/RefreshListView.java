@@ -1,4 +1,4 @@
-package com.sc.per.time_line.view;
+package com.example.refreshlisview;
 
 import android.content.Context;
 import android.util.AttributeSet;
@@ -6,13 +6,12 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.RotateAnimation;
+import android.widget.AbsListView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-
-import com.sc.per.time_line.R;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -62,6 +61,27 @@ public class RefreshListView extends ListView {
      */
     private int currentStatus = PULL_DOWN_REFRESH;
 
+    /**
+     * 加载更多
+     */
+    private View footerView;
+    /**
+     * 加载更多控件的高
+     */
+    private int footerViewHeight;
+    /**
+     * 是否已经加载更多
+     */
+    private boolean isLoadMore;
+    /**
+     * 顶部轮播图部分
+     */
+    private View topPager;
+    /**
+     * listView在Y轴上的坐标
+     */
+    private int listVeiwOnScreenY = -1;
+
 
     public RefreshListView(Context context) {
         this(context,null);
@@ -75,7 +95,61 @@ public class RefreshListView extends ListView {
         super(context, attrs, defStyleAttr);
         initHeaderView(context);
         initAnimation();//动画效果
+
+        initFooterView(context);
     }
+
+    //底部刷新
+    private void initFooterView(Context context) {
+        footerView = View.inflate(context,R.layout.refresh_foot,null);
+        footerView.measure(0,0);
+        footerViewHeight = footerView.getMeasuredHeight();
+        footerView.setPadding(0,-footerViewHeight,0,0);
+        //添加到listView中
+        addFooterView(footerView);
+
+        //监听listView的滚动
+        setOnScrollListener(new MyOnRefreshListener());
+    }
+
+    /**
+     * 将下拉刷新和顶部轮播图放到一个布局中，形成一个整体，加入到头部中
+     * @param topPager
+     */
+    public void addTopTadView(View topPager) {
+        if (topPager != null){
+            this.topPager = topPager;
+            headerView.addView(topPager);
+        }
+    }
+
+
+    class MyOnRefreshListener implements OnScrollListener{
+
+        @Override
+        public void onScrollStateChanged(AbsListView absListView, int i) {
+            //当静止或惯性滚动到底部
+            if (i == OnScrollListener.SCROLL_STATE_IDLE || i == OnScrollListener.SCROLL_STATE_FLING ){
+                //并且是最后一条可见
+                if (getLastVisiblePosition() >= getCount()-2){
+                    //1.显示加载更多布局
+                    footerView.setPadding(8,8,8,8);
+                    //2.状态改变
+                    isLoadMore = true;
+                    //3.回调接口
+                    if(mOnRefreshListener != null){
+                        mOnRefreshListener.onLoadMore();
+                    }
+                }
+            }
+        }
+
+        @Override
+        public void onScroll(AbsListView absListView, int i, int i1, int i2) {
+
+        }
+    }
+
 
     private Animation upAnimation;
     private Animation downAnimation;
@@ -130,6 +204,14 @@ public class RefreshListView extends ListView {
                 if (startY == -1){
                     startY = ev.getY();
                 }
+
+                //判断顶部轮播图是否完全显示，只有完全显示才会有下拉刷新
+                boolean isDisPlayTopScr =  isDisplayTopScr();
+                if (!isDisPlayTopScr){
+                    //加载更多
+                    break;
+                }
+
                 //如果正在刷新，直接放回
                 if (currentStatus == REFRESHING){
                     break;
@@ -181,6 +263,29 @@ public class RefreshListView extends ListView {
         return super.onTouchEvent(ev);
     }
 
+    /**
+     * 是否显示顶部轮播图
+     * 当listView在屏幕上的Y轴坐标小于或者等于顶部轮播图在Y轴的坐标时候，顶部轮播图完全显示
+     * @return
+     */
+    private boolean isDisplayTopScr() {
+        if (topPager != null){
+            //1.得到listView在屏幕上的坐标
+            int[] location = new int[2];
+            if (listVeiwOnScreenY == -1){
+                getLocationOnScreen(location);
+                listVeiwOnScreenY = location[1];
+            }
+            //2.得到顶部轮播图在屏幕上的坐标
+            topPager.getLocationOnScreen(location);
+            int topTabViewOnScreen = location[1];
+            return listVeiwOnScreenY <= topTabViewOnScreen;
+        }else {
+            return true;
+        }
+
+    }
+
 
     private void refreshViewState() {
         switch (currentStatus){
@@ -206,16 +311,28 @@ public class RefreshListView extends ListView {
      * @param success
      */
     public void onRefreshFinish(boolean success) {
-        tv_status.setText("下拉刷新...");
-        currentStatus = PULL_DOWN_REFRESH;
-        iv_arrow.clearAnimation();
-        pb_status.setVisibility(GONE);
-        iv_arrow.setVisibility(VISIBLE);
-        ll_pull_down_refresh.setPadding(0,-pullDownRefreshHeight,0 , 0);
+
         if (success){
-            //设置更新时间
-            tv_time.setText("上次更新时间：" + getSystemTime());
+            //加载更多
+            isLoadMore = false;
+            //隐藏控件
+            footerView.setPadding(0,-footerViewHeight,0,0);
+
+        }else {
+            //下拉刷新
+            tv_status.setText("下拉刷新...");
+            currentStatus = PULL_DOWN_REFRESH;
+            iv_arrow.clearAnimation();
+            pb_status.setVisibility(GONE);
+            iv_arrow.setVisibility(VISIBLE);
+            ll_pull_down_refresh.setPadding(0,-pullDownRefreshHeight,0 , 0);
+            if (success){
+                //设置更新时间
+                tv_time.setText("上次更新时间：" + getSystemTime());
+            }
         }
+
+
     }
 
     /**
@@ -232,7 +349,12 @@ public class RefreshListView extends ListView {
         /**
          * 当下拉刷新的时候回调这个方法
          */
-         void onPullDownRefresh();
+        void onPullDownRefresh();
+
+        /**
+         * 加载更多
+         */
+        void onLoadMore();
     }
 
     private OnRefreshListener mOnRefreshListener;

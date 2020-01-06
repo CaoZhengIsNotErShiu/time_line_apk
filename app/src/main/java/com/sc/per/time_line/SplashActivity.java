@@ -3,8 +3,6 @@ package com.sc.per.time_line;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
-import android.view.Gravity;
 import android.view.View;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
@@ -13,13 +11,10 @@ import android.view.animation.RotateAnimation;
 import android.view.animation.ScaleAnimation;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.sc.per.time_line.activity.GuideActivity;
 import com.sc.per.time_line.activity.MainActivity;
 import com.sc.per.time_line.utils.CacheUtils;
-
-import org.xutils.view.annotation.ViewInject;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -76,6 +71,8 @@ public class SplashActivity extends Activity {
             public void onClick(View v) {
                 startActivity(new Intent(SplashActivity.this, MainActivity.class));
                 finish();
+                task.cancel();
+
             }
         });
 

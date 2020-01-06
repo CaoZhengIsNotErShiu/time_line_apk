@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">时间线</string>
+    <string name="title_activity_cv">CvActivity</string>
 </resources>

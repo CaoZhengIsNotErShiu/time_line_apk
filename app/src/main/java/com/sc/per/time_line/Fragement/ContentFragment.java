@@ -1,8 +1,10 @@
 package com.sc.per.time_line.Fragement;
 
 
+import android.annotation.SuppressLint;
 import android.support.v4.view.ViewPager;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.RadioGroup;
 
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
@@ -26,6 +28,7 @@ import java.util.ArrayList;
 /**
  * 功能:主界面底部导航栏，切换，填充视图
  */
+@SuppressLint("ValidFragment")
 public class ContentFragment extends BaseFragment {
 
     @ViewInject(R.id.viewpager)
@@ -35,6 +38,17 @@ public class ContentFragment extends BaseFragment {
     private RadioGroup rg_main;
 
     private ArrayList<BasePager> pagers;
+
+    //adapter中广告控件里的ImageView
+    private ImageView ggImageView;
+
+    //广告item所在的位置
+    private int ggPosition = -1;
+
+    public ContentFragment(ImageView ggImageView, int ggPosition) {
+        this.ggImageView = ggImageView;
+        this.ggPosition = ggPosition;
+    }
 
     @Override
     public View initView() {
@@ -53,7 +67,7 @@ public class ContentFragment extends BaseFragment {
         pagers.add(new HomePager(context));
         pagers.add(new VipPager(context));
         pagers.add(new EditorPager(context));
-        pagers.add(new InformPager(context));
+        pagers.add(new InformPager(context,ggImageView,ggPosition));
         pagers.add(new SettingPager(context));
 
         //设置viewpager的适配器

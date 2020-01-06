@@ -12,7 +12,6 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
@@ -20,7 +19,6 @@ import com.jeremyfeinstein.slidingmenu.lib.app.SlidingFragmentActivity;
 import com.sc.per.time_line.Fragement.ContentFragment;
 import com.sc.per.time_line.Fragement.LeftMenuFragment;
 import com.sc.per.time_line.R;
-import com.sc.per.time_line.utils.BarUtils;
 import com.sc.per.time_line.utils.DensityUtil;
 
 
@@ -31,6 +29,12 @@ public class MainActivity extends SlidingFragmentActivity {
 
     public static final String LEFT_MENU_TAG = "left_menu_tag";
     public static final String MAIN_ACTIVITY = "main_activity";
+
+    //adapter中广告控件里的ImageView
+    private ImageView ggImageView;
+
+    //广告item所在的位置
+    private int ggPosition = -1;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -73,7 +77,7 @@ public class MainActivity extends SlidingFragmentActivity {
         FragmentTransaction ft = manager.beginTransaction();
         //3.替换数据
         ft.replace(R.id.left_menu_activity, new LeftMenuFragment(), LEFT_MENU_TAG);
-        ft.replace(R.id.main_activity, new ContentFragment(), MAIN_ACTIVITY);
+        ft.replace(R.id.main_activity, new ContentFragment(ggImageView,ggPosition), MAIN_ACTIVITY);
         //4.提交
         ft.commit();
     }
@@ -118,7 +122,7 @@ public class MainActivity extends SlidingFragmentActivity {
                                     ViewGroup.LayoutParams.MATCH_PARENT);
                             mPopu.setHeight(ViewGroup.LayoutParams.MATCH_PARENT);
                             mLine.getBackground().setAlpha(80);
-                            mPopu.setAnimationStyle(R.style.pop_animation);//动画
+//                            mPopu.setAnimationStyle(R.style.pop_animation);//动画
                             mPopu.showAtLocation(view, Gravity.CENTER, 0, 0);
                             bgAlpha(0.5f);
                             mLine.setOnClickListener(new View.OnClickListener() {
@@ -159,4 +163,9 @@ public class MainActivity extends SlidingFragmentActivity {
     }
 
 
+    //用来从adapter里设置广告item的位置和ImageView（扩展：从这里传广告的图片地址,然后去加载）
+    public void setGGViewPosition(int position, ImageView ggView) {
+        this.ggPosition = position;
+        this.ggImageView = ggView;
+    }
 }
