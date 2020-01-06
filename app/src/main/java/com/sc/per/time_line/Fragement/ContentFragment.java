@@ -38,6 +38,8 @@ public class ContentFragment extends BaseFragment {
     private RadioGroup rg_main;
 
     private ArrayList<BasePager> pagers;
+    //当前被点击加载的页面位置
+    private int currentPoint;
 
     //adapter中广告控件里的ImageView
     private ImageView ggImageView;
@@ -88,6 +90,7 @@ public class ContentFragment extends BaseFragment {
         return (HomePager) pagers.get(0);
     }
 
+    //监听某个页面被加载
     class MyOnPageChangeListener implements ViewPager.OnPageChangeListener {
 
         @Override
@@ -96,12 +99,14 @@ public class ContentFragment extends BaseFragment {
 
         /**
          * 当某个页面被选中，回调
+         *
          * @param i
          */
         @Override
         public void onPageSelected(int i) {
             BasePager basePager = pagers.get(i);
             basePager.initData();
+            currentPoint = i;
         }
 
         @Override
@@ -123,7 +128,10 @@ public class ContentFragment extends BaseFragment {
                     isEnableSlidingMenu(SlidingMenu.TOUCHMODE_NONE);
                     break;
                 case R.id.editor_btn:
-                    viewPager.setCurrentItem(2);
+//                  viewPager.setCurrentItem(2);
+                    upEditView();
+
+                    android.widget.Toast.makeText(context ,"条目被点击：" + currentPoint , android.widget.Toast.LENGTH_SHORT ).show();
                     isEnableSlidingMenu(SlidingMenu.TOUCHMODE_NONE);
                     break;
                 case R.id.author_btn:
@@ -146,6 +154,47 @@ public class ContentFragment extends BaseFragment {
         mainActivity.getSlidingMenu().setTouchModeAbove(touchModel);
     }
 
+    private void upEditView(){
+        View view = View.inflate(context, R.layout.first_popuwindow, null);
+                            android.widget.ImageView mImg_first = view.findViewById(R.id.mImg_first);
+                            //关闭按钮
+                            android.widget.ImageView iv_first_close = view.findViewById(R.id.iv_first_close);
+                            android.widget.LinearLayout mLine = view.findViewById(R.id.mLine);
+                            final android.widget.PopupWindow mPopu = new android.widget.PopupWindow(view, android.view.ViewGroup.LayoutParams.MATCH_PARENT,
+                                    android.view.ViewGroup.LayoutParams.MATCH_PARENT);
+                            mPopu.setHeight(android.view.ViewGroup.LayoutParams.MATCH_PARENT);
+                            mLine.getBackground().setAlpha(80);
+                            mPopu.setAnimationStyle(R.style.pop_animation);//动画
+                            mPopu.showAtLocation(view, android.view.Gravity.CENTER, 0, 0);
+                            bgAlpha(0.5f);
+                            mImg_first.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    //跳转广告新闻
+                                    android.widget.Toast.makeText(context,"我还没有写内容呢",android.widget.Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                            iv_first_close.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    bgAlpha(1f);
+                                    viewPager.setCurrentItem(currentPoint);
+                                    mPopu.dismiss();
+                                }
+                            });
+
+                            mPopu.setOutsideTouchable(true);//判断在外面点击是否有效
+                            mPopu.setFocusable(true);
+                            mPopu.showAsDropDown(view);
+                            mPopu.isShowing();
+    }
+
+    private void bgAlpha(float bgAlpha) {
+        android.view.WindowManager.LayoutParams lp = context.getWindow().getAttributes();
+        lp.alpha = bgAlpha; //0.0-1.0
+        context.getWindow().addFlags(android.view.WindowManager.LayoutParams.FLAG_DIM_BEHIND);
+        context.getWindow().setAttributes(lp);
+    }
 
 
 

@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import com.sc.per.time_line.R;
 import com.sc.per.time_line.entity.Article;
+import com.sc.per.time_line.entity.TopAndListViewEntity;
 import com.sc.per.time_line.utils.Constants;
 import com.sc.per.time_line.utils.ImageViewUtil;
 
@@ -31,11 +32,11 @@ public class MyTabDetailImagePagerAdapter extends PagerAdapter {
 
 
     private final Context context;
-    private List<Article.DataBean.ListBean> article;
+    private List<TopAndListViewEntity.TopImageScrollBean> article;
 
     private ImageOptions imageOptions;
 
-    public MyTabDetailImagePagerAdapter(Context context,  List<Article.DataBean.ListBean> article) {
+    public MyTabDetailImagePagerAdapter(Context context,  List<TopAndListViewEntity.TopImageScrollBean> article) {
         this.context = context;
         this.article = article;
         imageOptions = new ImageOptions.Builder()
@@ -61,7 +62,7 @@ public class MyTabDetailImagePagerAdapter extends PagerAdapter {
 //        imageView.setImageResource(mImage[position]);//ImageView设置图片
         imageView.setScaleType(ImageView.ScaleType.FIT_XY);//铺满屏幕
         container.addView(imageView); // 添加到ViewPager容器
-        String s = article.get(position).getThematicUrl();
+        String s = (String) article.get(position).getThematicUrl();
         String url = Constants.TIME_LINE_CLOUD + s;
         x.image().bind(imageView, url,imageOptions);
         return imageView;// 返回填充的View对象

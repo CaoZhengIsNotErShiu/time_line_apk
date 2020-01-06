@@ -125,7 +125,7 @@ public class MainActivity extends SlidingFragmentActivity {
 //                            mPopu.setAnimationStyle(R.style.pop_animation);//动画
                             mPopu.showAtLocation(view, Gravity.CENTER, 0, 0);
                             bgAlpha(0.5f);
-                            mLine.setOnClickListener(new View.OnClickListener() {
+                            mImg_first.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View view) {
                                     //跳转广告新闻

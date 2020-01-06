@@ -14,7 +14,7 @@ import com.sc.per.time_line.base.MenuDetailBasePager;
 import com.sc.per.time_line.entity.Menu;
 import com.sc.per.time_line.entity.MenuBean;
 import com.sc.per.time_line.menudetailpager.AfterPager;
-import com.sc.per.time_line.menudetailpager.DiaryPager;
+//import com.sc.per.time_line.menudetailpager.DiaryPager;
 import com.sc.per.time_line.menudetailpager.EssaysPager;
 import com.sc.per.time_line.menudetailpager.FrontPager;
 import com.sc.per.time_line.menudetailpager.LiunxPager;
@@ -117,7 +117,7 @@ public class HomePager extends BasePager {
         //左侧菜单详情页面
         menuDetailBasePagers = new ArrayList<>();
         menuDetailBasePagers.add(new EssaysPager(context,menus));
-        menuDetailBasePagers.add(new DiaryPager(context));
+//        menuDetailBasePagers.add(new DiaryPager(context,menus));
         menuDetailBasePagers.add(new ShowPager(context));
         menuDetailBasePagers.add(new FrontPager(context));
         menuDetailBasePagers.add(new AfterPager(context));

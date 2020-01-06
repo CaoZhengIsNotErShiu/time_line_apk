@@ -18,6 +18,7 @@ import com.sc.per.time_line.adapter.MyTabDetailImagePagerAdapter;
 import com.sc.per.time_line.base.MenuDetailBasePager;
 import com.sc.per.time_line.entity.Article;
 import com.sc.per.time_line.entity.Menu;
+import com.sc.per.time_line.entity.TopAndListViewEntity;
 import com.sc.per.time_line.utils.CacheUtils;
 import com.sc.per.time_line.utils.Constants;
 import com.sc.per.time_line.view.HorizontalScrollViewPager;
@@ -46,8 +47,8 @@ public class TabDetailPager extends MenuDetailBasePager {
 
     private TabDetailListAdapter adapter;
 
-    private List<Article.DataBean.ListBean> list;
-    private List<Article.DataBean.ListBean> imageList;
+    private List<TopAndListViewEntity.ListViewBean.ListBean> list;
+    private List<TopAndListViewEntity.TopImageScrollBean> imageList;
 
     //之前点
     private int prePosition;
@@ -92,7 +93,6 @@ public class TabDetailPager extends MenuDetailBasePager {
         @Override
         public void onPullDownRefresh() {
             //1.下拉刷新
-
             String pageNum = CacheUtils.getString(context,menu.getUrl()+"_list_page_num");
             Toast.makeText(context,"下拉onPullDownRefresh:"+pageNum, Toast.LENGTH_SHORT ).show();
             getMenuDetailByMenuUrl(menu.getUrl(),pageNum);
@@ -117,7 +117,6 @@ public class TabDetailPager extends MenuDetailBasePager {
         }
 
         String pageNum = CacheUtils.getString(context,menu.getUrl()+"_list_page_num");
-        Toast.makeText(context,"初始化initData:"+ pageNum, Toast.LENGTH_SHORT ).show();
         if ( pageNum != "0"){
             getMenuDetailByMenuUrl(menu.getUrl(),pageNum);
         }
@@ -130,16 +129,14 @@ public class TabDetailPager extends MenuDetailBasePager {
      * @param pageNum 下一页
      */
     private void getMoreDateForUrl(final String url, String pageNum) {
-        RequestParams params = new RequestParams(Constants.TIME_LINE_MENU_INFO_URL);
+        RequestParams params = new RequestParams(Constants.TIME_LINE_LIST_VIEW_AND_TOP_IMAGE);
         params.setConnectTimeout(5000);
         params.addBodyParameter("index",url);
-        params.addBodyParameter("pageNum",pageNum);
+        params.addBodyParameter("pageNum",1);
         x.http().post(params, new Callback.CommonCallback<String>() {
-
             @Override
             public void onSuccess(String result) {
                 //1.缓存菜单数据
-
                 //联网请求数据
                 isLoadMore = true;
                 //解析数据
@@ -225,30 +222,17 @@ public class TabDetailPager extends MenuDetailBasePager {
      */
     private void processData(String json,String url) {
         Gson gson = new Gson();
-        Article article = gson.fromJson(json, Article.class);
+        TopAndListViewEntity article = gson.fromJson(json, TopAndListViewEntity.class);
 
-        int nextPage = article.getData().getNextPage();
+        int nextPage = article.getListView().getNextPage();
         //将下一页数据放到缓存
         CacheUtils.putString(context,url+"_list_page_num",nextPage+"");
-
         //默认和加载更多
         if (!isLoadMore){
             //默认
-            list = article.getData().getList();
-            imageList = new ArrayList<>();
-            //过多轮播，只显示三个
-            if (list.size() >= 3 ){
-                for (int i = 0; i < 3 ; i++) {
-                    Article.DataBean.ListBean listBean = new Article.DataBean.ListBean();
-                    String imageUrl = listBean.getThematicUrl();
-                    String title = listBean.getTitle();
-                    listBean.setThematicUrl(imageUrl);
-                    listBean.setTitle(title);
-                    imageList.add(listBean);
-                }
-            }else {
-                imageList = list;
-            }
+             list = article.getListView().getList();
+            imageList = article.getTopImageScroll();
+
             //顶部轮播图适配器
             viewpager.setAdapter(new MyTabDetailImagePagerAdapter(context,imageList));
             //添加红点
@@ -257,8 +241,8 @@ public class TabDetailPager extends MenuDetailBasePager {
             //监听页面的改变，设置红点变化和文本变化
             viewpager.addOnPageChangeListener(new MyTabDetailTopOnPagerChangeListener());
             //初始化轮播图顶部数据
-            if (!list.isEmpty()){
-                tv_title.setText(list.get(0).getTitle());
+            if (!this.list.isEmpty()){
+                tv_title.setText(this.list.get(0).getTitle());
             }
             adapter = new TabDetailListAdapter();
             //列表数据 listView
@@ -268,8 +252,8 @@ public class TabDetailPager extends MenuDetailBasePager {
             //加载更多
             isLoadMore = false;
             //添加到原来的集合中
-            List<Article.DataBean.ListBean> moreList = article.getData().getList();
-            list.addAll(moreList);
+            List<TopAndListViewEntity.ListViewBean.ListBean> moreList = article.getListView().getList();
+            this.list.addAll(moreList);
             //刷新下适配器
             adapter.notifyDataSetChanged();
 
