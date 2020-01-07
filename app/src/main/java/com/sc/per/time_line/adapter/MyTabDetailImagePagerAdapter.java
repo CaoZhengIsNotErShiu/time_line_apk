@@ -32,11 +32,11 @@ public class MyTabDetailImagePagerAdapter extends PagerAdapter {
 
 
     private final Context context;
-    private List<TopAndListViewEntity.TopImageScrollBean> article;
+    private List<Article.DataBean.ListBean> article;
 
     private ImageOptions imageOptions;
 
-    public MyTabDetailImagePagerAdapter(Context context,  List<TopAndListViewEntity.TopImageScrollBean> article) {
+    public MyTabDetailImagePagerAdapter(Context context,  List<Article.DataBean.ListBean> article) {
         this.context = context;
         this.article = article;
         imageOptions = new ImageOptions.Builder()

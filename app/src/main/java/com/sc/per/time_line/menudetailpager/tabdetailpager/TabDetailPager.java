@@ -47,8 +47,7 @@ public class TabDetailPager extends MenuDetailBasePager {
 
     private TabDetailListAdapter adapter;
 
-    private List<TopAndListViewEntity.ListViewBean.ListBean> list;
-    private List<TopAndListViewEntity.TopImageScrollBean> imageList;
+    private List<Article.DataBean.ListBean> list;
 
     //之前点
     private int prePosition;
@@ -57,6 +56,7 @@ public class TabDetailPager extends MenuDetailBasePager {
     private ImageOptions imageOptions;
     //加载更多
     private boolean isLoadMore = false;
+    private List<Article.DataBean.ListBean> imageList;
 
     public TabDetailPager(Context context,Menu menu) {
         super(context);
@@ -101,7 +101,6 @@ public class TabDetailPager extends MenuDetailBasePager {
         @Override
         public void onLoadMore() {
             //1.下拉刷新
-//            Toast.makeText(context,"加载更多刷新被回调了:"+menu.getUrl(), Toast.LENGTH_SHORT ).show();
             String pageNum = CacheUtils.getString(context,menu.getUrl()+"_list_page_num");
             getMoreDateForUrl(menu.getUrl(),pageNum);
         }
@@ -129,7 +128,7 @@ public class TabDetailPager extends MenuDetailBasePager {
      * @param pageNum 下一页
      */
     private void getMoreDateForUrl(final String url, String pageNum) {
-        RequestParams params = new RequestParams(Constants.TIME_LINE_LIST_VIEW_AND_TOP_IMAGE);
+        RequestParams params = new RequestParams(Constants.TIME_LINE_MENU_INFO_URL);
         params.setConnectTimeout(5000);
         params.addBodyParameter("index",url);
         params.addBodyParameter("pageNum",1);
@@ -172,17 +171,10 @@ public class TabDetailPager extends MenuDetailBasePager {
      */
     private void getMenuDetailByMenuUrl(final String url,String pageNum){
 
-        if (pageNum.equals("0")){
-            Toast.makeText(context,"暂无更多数据~ ： " + url,Toast.LENGTH_LONG).show();
-            //隐藏下拉刷新控件，更新时间
-            list_item.onRefreshFinish(false);
-            return;
-        }
-
         RequestParams params = new RequestParams(Constants.TIME_LINE_MENU_INFO_URL);
         params.setConnectTimeout(5000);
         params.addBodyParameter("index",url);
-        params.addBodyParameter("pageNum",pageNum);
+        params.addBodyParameter("pageNum",1);
         x.http().post(params, new Callback.CommonCallback<String>() {
 
             @Override
@@ -222,17 +214,28 @@ public class TabDetailPager extends MenuDetailBasePager {
      */
     private void processData(String json,String url) {
         Gson gson = new Gson();
-        TopAndListViewEntity article = gson.fromJson(json, TopAndListViewEntity.class);
+        Article article = gson.fromJson(json, Article.class);
 
-        int nextPage = article.getListView().getNextPage();
+        int nextPage = article.getData().getNextPage();
         //将下一页数据放到缓存
         CacheUtils.putString(context,url+"_list_page_num",nextPage+"");
         //默认和加载更多
         if (!isLoadMore){
             //默认
-             list = article.getListView().getList();
-            imageList = article.getTopImageScroll();
-
+            list = article.getData().getList();
+            imageList = new ArrayList<>();
+            if (list.size() >= 3){
+                 for (int i = 0; i < list.size() ; i++) {
+                     String thematicUrl = list.get(i).getThematicUrl();
+                     String title = list.get(i).getTitle();
+                     Article.DataBean.ListBean listBean = new Article.DataBean.ListBean();
+                     listBean.setTitle(title);
+                     listBean.setThematicUrl(thematicUrl);
+                     imageList.add(listBean);
+                 }
+             }else {
+                imageList =  list;
+            }
             //顶部轮播图适配器
             viewpager.setAdapter(new MyTabDetailImagePagerAdapter(context,imageList));
             //添加红点
@@ -252,12 +255,10 @@ public class TabDetailPager extends MenuDetailBasePager {
             //加载更多
             isLoadMore = false;
             //添加到原来的集合中
-            List<TopAndListViewEntity.ListViewBean.ListBean> moreList = article.getListView().getList();
+            List<Article.DataBean.ListBean> moreList = article.getData().getList();
             this.list.addAll(moreList);
             //刷新下适配器
             adapter.notifyDataSetChanged();
-
-
         }
 
 

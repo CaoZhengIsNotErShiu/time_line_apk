@@ -12,8 +12,6 @@ public class Constants {
     //腾讯服务器
     public static final String TIME_LINE_CLOUD_URL = "https://www.ohhhs.cn/api";
 
-
-
     public static final String TIME_LINE_CLOUD = "https://www.ohhhs.cn";
 
     //菜单
@@ -21,14 +19,6 @@ public class Constants {
 
     //根据菜单获取   userName&index=jour&pageNum=1
     public static final String TIME_LINE_MENU_INFO_URL = TIME_LINE_CLOUD_URL+"/timelineIndex/queryAllTimeLineInfo";
-
-    //列表and菜单
-    public static final String TIME_LINE_LIST_VIEW_AND_TOP_IMAGE = TIME_LINE_CLOUD_URL+"/mobile/getMobileListView";
-
-
-    //顶部轮播图 /mobile/getTopImageScroll
-
-
 
 
 }
