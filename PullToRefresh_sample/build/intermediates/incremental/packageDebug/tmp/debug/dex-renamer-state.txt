@@ -1,4 +1,0 @@
-#Mon Jan 06 11:58:37 CST 2020
-base.0=F\:\\Android\\time_line\\PullToRefresh_sample\\build\\intermediates\\transforms\\dexMerger\\debug\\0
-path.0=classes.dex
-renamed.0=classes.dex
