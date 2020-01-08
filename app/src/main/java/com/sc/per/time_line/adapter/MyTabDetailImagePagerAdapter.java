@@ -1,23 +1,15 @@
 package com.sc.per.time_line.adapter;
 
 import android.content.Context;
-import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
 import android.support.v4.view.PagerAdapter;
-import android.text.TextUtils;
-import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import com.sc.per.time_line.R;
 import com.sc.per.time_line.entity.Article;
-import com.sc.per.time_line.entity.TopAndListViewEntity;
 import com.sc.per.time_line.utils.Constants;
-import com.sc.per.time_line.utils.ImageViewUtil;
 
 import org.xutils.common.util.DensityUtil;
 import org.xutils.image.ImageOptions;

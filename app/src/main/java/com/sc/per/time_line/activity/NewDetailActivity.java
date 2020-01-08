@@ -3,12 +3,23 @@ package com.sc.per.time_line.activity;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
+import android.graphics.Rect;
+import android.graphics.RectF;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -33,6 +44,8 @@ public class NewDetailActivity extends Activity implements View.OnClickListener{
     private ProgressBar pbLoading;
     private String url;
     private WebSettings settings;
+    private TextView ttTitle;
+    private ImageView ivTitleHeader;
 
 
     private void findViews() {
@@ -43,6 +56,8 @@ public class NewDetailActivity extends Activity implements View.OnClickListener{
         ibShare = findViewById( R.id.ib_share );
         webview = findViewById( R.id.webview );
         pbLoading = findViewById( R.id.pb_loading );
+        ttTitle = findViewById( R.id.tt_title );
+        ivTitleHeader = findViewById( R.id.iv_icon );
         //隐藏，显示
         ivTitle.setVisibility(View.GONE);
         ibMenu.setVisibility(View.GONE);
@@ -139,6 +154,11 @@ public class NewDetailActivity extends Activity implements View.OnClickListener{
                 Gson gson = new Gson();
                 ArticleDetail article = gson.fromJson(result, ArticleDetail.class);
                 System.out.println(article.getData().getData());
+                ttTitle.setText(article.getData().getTitle());
+                Bitmap bitmap = BitmapFactory.decodeResource(getResources(),R.drawable.guide3);
+                //设置bitmap.getWidth()可以获得圆形
+                Bitmap bitmap1 = ClipSquareBitmap(bitmap,100,bitmap.getWidth());
+                ivTitleHeader.setImageBitmap(bitmap1);
                 //设置支持js
                 settings = webview.getSettings();
                 settings.setJavaScriptEnabled(true);
@@ -182,8 +202,113 @@ public class NewDetailActivity extends Activity implements View.OnClickListener{
     private String getHtmlData(String bodyHTML) {
         String head = "<head>"
                 + "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0, user-scalable=no\"> "
-                + "<style>img{max-width: 100%; width:100%; height:auto;}*{margin:0px;}</style>"
+                + "<style>/* table 样式 */\n" +
+                "table {\n" +
+                "  border-top: 1px solid #ccc;\n" +
+                "  border-left: 1px solid #ccc;\n" +
+                "}\n" +
+                "table td,\n" +
+                "table th {\n" +
+                "  border-bottom: 1px solid #ccc;\n" +
+                "  border-right: 1px solid #ccc;\n" +
+                "  padding: 3px 5px;\n" +
+                "}\n" +
+                "table th {\n" +
+                "  border-bottom: 2px solid #ccc;\n" +
+                "  text-align: center;\n" +
+                "}\n" +
+                "\n" +
+                "/* blockquote 样式 */\n" +
+                "blockquote {\n" +
+                "  display: block;\n" +
+                "  border-left: 8px solid #d0e5f2;\n" +
+                "  padding: 5px 10px;\n" +
+                "  margin: 10px 0;\n" +
+                "  line-height: 1.4;\n" +
+                "  font-size: 100%;\n" +
+                "  background-color: #f1f1f1;\n" +
+                "}\n" +
+                "\n" +
+                "/* code 样式 */\n" +
+                "code {\n" +
+                "  display: inline-block;\n" +
+                "  *display: inline;\n" +
+                "  *zoom: 1;\n" +
+                "  background-color: #f1f1f1;\n" +
+                "  border-radius: 3px;\n" +
+                "  padding: 3px 5px;\n" +
+                "  margin: 0 3px;\n" +
+                "}\n" +
+                "pre code {\n" +
+                "  display: block;\n" +
+                "}\n" +
+                "\n" +
+                "/* ul ol 样式 */\n" +
+                "ul, ol {\n" +
+                "  margin: 10px 0 10px 20px;\n" +
+                "}</style>"
                 + "</head>";
         return "<html>" + head + "<body>" + bodyHTML + "</body></html>";
     }
+
+    /**
+     * 设置圆形头像
+     * @param bmp
+     * @param width
+     * @param radius
+     * @return
+     */
+    public static Bitmap ClipSquareBitmap(Bitmap bmp, int width, int radius) {
+        if (bmp == null || width <= 0)
+            return null;
+        //如果图片比较小就没必要进行缩放了
+
+        /**
+         * 把图片进行缩放，以宽高最小的一边为准，缩放图片比例
+         * */
+        if (bmp.getWidth() > width && bmp.getHeight() > width) {
+            if (bmp.getWidth() > bmp.getHeight()) {
+                bmp = Bitmap.createScaledBitmap(bmp, (int) (((float) width) * bmp.getWidth() / bmp.getHeight()), width, false);
+            } else {
+                bmp = Bitmap.createScaledBitmap(bmp, width, (int) (((float) width) * bmp.getHeight() / bmp.getWidth()), false);
+            }
+
+        } else {
+            width = bmp.getWidth() > bmp.getHeight() ? bmp.getHeight() : bmp.getWidth();
+            Log.d("zeyu","宽" + width + ",w" + bmp.getWidth() + ",h" + bmp.getHeight());
+            if (radius > width) {
+                radius = width;
+            }
+        }
+        Bitmap output = Bitmap.createBitmap(width, width, Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(output);
+        //设置画笔全透明
+        canvas.drawARGB(0, 0, 0, 0);
+        Paint paints = new Paint();
+        paints.setColor(Color.WHITE);
+        paints.setAntiAlias(true);//去锯齿
+        paints.setFilterBitmap(true);
+        //防抖动
+        paints.setDither(true);
+
+        //把图片圆形绘制矩形
+        if (radius <= 0)
+            canvas.drawRect(new Rect(0, 0, width, width), paints);
+        else //绘制圆角
+            canvas.drawRoundRect(new RectF(0, 0, width, width), radius, radius, paints);
+        // 取两层绘制交集。显示前景色。
+        paints.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
+        Rect rect = new Rect();
+        if (bmp.getWidth() >= bmp.getHeight()) {
+            rect.set((bmp.getWidth() - width) / 2, 0, (bmp.getWidth() + width) / 2, width);
+        } else {
+            rect.set(0, (bmp.getHeight() - width) / 2, width, (bmp.getHeight() + width) / 2);
+        }
+        Rect rect2 = new Rect(0, 0, width, width);
+        //第一个rect 针对bmp的绘制区域，rect2表示绘制到上面位置
+        canvas.drawBitmap(bmp, rect, rect2, paints);
+        bmp.recycle();
+        return output;
+    }
+
 }

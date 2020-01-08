@@ -36,6 +36,8 @@
         <item name="android:padding">18dp</item>
     </style>
 
+
+
     <!-- 首页广告弹窗动画 -->
     <style name="pop_animation" parent="android:Animation">
         <item name="android:windowEnterAnimation">@anim/pop_in</item>

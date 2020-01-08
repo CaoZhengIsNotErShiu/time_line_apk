@@ -1,10 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="Primary">#000000</color>
+    <color name="blackTitle">#161618</color>
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorAccent">#FF4081</color>
     <color name="ActionBarBackground">#00CAC3</color>
     <color name="query_title_bg">#CAC5C5</color>
+    <color name="Gray">#9B9B9B</color>
+    <color name="BlackName">#434147</color>
+    <color name="WhiteButton">#FEFEFE</color>
+
+
 
     <color name="transparent">#00000000</color> <!--透明色-->
     <color name="white">#FFFFFF</color><!--白色 -->
