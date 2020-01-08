@@ -1,7 +1,0 @@
-#Internal package file, do not edit.
-#Mon Jan 06 11:58:40 CST 2020
-0.baseType=DIRECTORY
-0.base=F\:\\Android\\time_line\\ViewPagerIndicator_sample\\build\\intermediates\\transforms\\dexMerger\\debug\\0
-0.path=classes.dex
-0.set=DEX
-count=1
