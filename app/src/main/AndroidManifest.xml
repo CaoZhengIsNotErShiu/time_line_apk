@@ -17,7 +17,7 @@
         <activity
             android:name=".activity.CvActivity"
             android:label="@string/title_activity_cv"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activity.MainActivity"
             android:theme="@style/Theme.PageIndicatorDefaults" />
@@ -29,6 +29,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".activity.GuideActivity" />
+        <activity android:name=".activity.NewDetailActivity"></activity>
     </application>
 
 </manifest>

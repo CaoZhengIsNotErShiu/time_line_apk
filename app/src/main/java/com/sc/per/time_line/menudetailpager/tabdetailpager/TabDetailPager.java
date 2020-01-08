@@ -1,10 +1,13 @@
 package com.sc.per.time_line.menudetailpager.tabdetailpager;
 
 import android.content.Context;
+import android.content.Intent;
+import android.graphics.Color;
 import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -14,11 +17,11 @@ import android.widget.Toast;
 import com.example.refreshlisview.RefreshListView;
 import com.google.gson.Gson;
 import com.sc.per.time_line.R;
+import com.sc.per.time_line.activity.NewDetailActivity;
 import com.sc.per.time_line.adapter.MyTabDetailImagePagerAdapter;
 import com.sc.per.time_line.base.MenuDetailBasePager;
 import com.sc.per.time_line.entity.Article;
 import com.sc.per.time_line.entity.Menu;
-import com.sc.per.time_line.entity.TopAndListViewEntity;
 import com.sc.per.time_line.utils.CacheUtils;
 import com.sc.per.time_line.utils.Constants;
 import com.sc.per.time_line.view.HorizontalScrollViewPager;
@@ -38,6 +41,7 @@ import java.util.List;
  */
 public class TabDetailPager extends MenuDetailBasePager {
 
+    public static final String REAL_ARRAY_ID = "real_array_id";
     private HorizontalScrollViewPager viewpager;
     private TextView tv_title;
     private LinearLayout ll_point_group;
@@ -83,9 +87,36 @@ public class TabDetailPager extends MenuDetailBasePager {
         //把顶部轮播图，以头的方式添加到listView中
 //        list_item.addHeaderView(topPager);
         list_item.addTopTadView(topPager);
-        //设置监听
+        //设置下拉刷新监听
         list_item.setOnRefreshListener(new MyOnRefreshListener());
+
+        //设置listView的item的监听
+        list_item.setOnItemClickListener(new myOnItemClickListener());
         return view;
+    }
+
+    //设置listView的item的监听
+    class myOnItemClickListener implements AdapterView.OnItemClickListener{
+
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            int realPosition = position -1;
+            Article.DataBean.ListBean listBean = list.get(realPosition);
+//            Toast.makeText(context,"id: " + listBean.getId() ,Toast.LENGTH_SHORT ).show();
+            //1.取出id，判断是否存在
+            String ids = CacheUtils.getString(context, REAL_ARRAY_ID);
+            //2.判断，不存在，保存，存在，刷新适配器
+            if(!ids.contains(listBean.getId())){
+                CacheUtils.putString(context,REAL_ARRAY_ID , ids+listBean.getId()+",");
+                //刷新适配器
+                adapter.notifyDataSetChanged();
+            }
+            //3.跳转到新闻详情浏览页面
+            Intent intent = new Intent(context,NewDetailActivity.class);
+            intent.putExtra("art_id", listBean.getId());
+//            intent.putExtra("url", "https://blog.csdn.net/douzi949389/article/details/103784598");
+            context.startActivity(intent);
+        }
     }
 
     class MyOnRefreshListener implements RefreshListView.OnRefreshListener{
@@ -96,6 +127,7 @@ public class TabDetailPager extends MenuDetailBasePager {
             String pageNum = CacheUtils.getString(context,menu.getUrl()+"_list_page_num");
             Toast.makeText(context,"下拉onPullDownRefresh:"+pageNum, Toast.LENGTH_SHORT ).show();
             getMenuDetailByMenuUrl(menu.getUrl(),pageNum);
+
         }
 
         @Override
@@ -291,8 +323,17 @@ public class TabDetailPager extends MenuDetailBasePager {
             x.image().bind(viewHolder.iv_icon, thematicUrl,imageOptions);//图片
             String title = list.get(position).getTitle();
             viewHolder.ll_tv_title.setText(title);
+            //设置更新时间
             String createTime = list.get(position).getCreateTime();
             viewHolder.ll_tv_time.setText(createTime);
+            String ids = CacheUtils.getString(context,REAL_ARRAY_ID );
+            if (ids.contains(list.get(position).getId())){
+                //设置灰色
+                viewHolder.ll_tv_title.setTextColor(Color.parseColor("#CAC5C5"));
+            }else {
+                //设置黑色
+                viewHolder.ll_tv_title.setTextColor(Color.parseColor("#000000"));
+            }
             return convertView;
         }
 
