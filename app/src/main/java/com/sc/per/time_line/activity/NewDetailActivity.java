@@ -20,6 +20,7 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -28,6 +29,8 @@ import com.google.gson.Gson;
 import com.sc.per.time_line.R;
 import com.sc.per.time_line.entity.ArticleDetail;
 import com.sc.per.time_line.utils.Constants;
+import com.sc.per.time_line.view.ScollListenWebView;
+import com.sc.per.time_line.view.WebLayout;
 
 import org.xutils.common.Callback;
 import org.xutils.http.RequestParams;
@@ -40,13 +43,15 @@ public class NewDetailActivity extends Activity implements View.OnClickListener{
     private ImageButton ibBack;
     private ImageButton ibFont;
     private ImageButton ibShare;
-    private WebView webview;
+
     private ProgressBar pbLoading;
     private String url;
     private WebSettings settings;
     private TextView ttTitle;
     private ImageView ivTitleHeader;
 
+    private WebLayout weblayout;
+    private ScollListenWebView webview;
 
     private void findViews() {
         ivTitle = findViewById( R.id.iv_title );
@@ -54,10 +59,12 @@ public class NewDetailActivity extends Activity implements View.OnClickListener{
         ibBack = findViewById( R.id.ib_back );
         ibFont = findViewById( R.id.ib_font );
         ibShare = findViewById( R.id.ib_share );
-        webview = findViewById( R.id.webview );
+        webview = findViewById( R.id.scroll_webview );
         pbLoading = findViewById( R.id.pb_loading );
         ttTitle = findViewById( R.id.tt_title );
         ivTitleHeader = findViewById( R.id.iv_icon );
+
+        weblayout = findViewById( R.id.weblayout1);
         //隐藏，显示
         ivTitle.setVisibility(View.GONE);
         ibMenu.setVisibility(View.GONE);
@@ -139,6 +146,16 @@ public class NewDetailActivity extends Activity implements View.OnClickListener{
         setContentView(R.layout.activity_new_dateil);
         findViews();
         getData();
+        setScollListener();
+    }
+
+    private void setScollListener() {
+        webview.setOnScrollChangedCallback(new ScollListenWebView.OnScrollChangedCallback() {
+            @Override
+            public void onScroll(int dx, int dy) {
+                weblayout.scrollBy(0,dy);
+            }
+        });
     }
 
     private void getData() {
@@ -157,7 +174,7 @@ public class NewDetailActivity extends Activity implements View.OnClickListener{
                 ttTitle.setText(article.getData().getTitle());
                 Bitmap bitmap = BitmapFactory.decodeResource(getResources(),R.drawable.guide3);
                 //设置bitmap.getWidth()可以获得圆形
-                Bitmap bitmap1 = ClipSquareBitmap(bitmap,100,bitmap.getWidth());
+                Bitmap bitmap1 = ClipSquareBitmap(bitmap,80,bitmap.getWidth());
                 ivTitleHeader.setImageBitmap(bitmap1);
                 //设置支持js
                 settings = webview.getSettings();
@@ -175,6 +192,12 @@ public class NewDetailActivity extends Activity implements View.OnClickListener{
                     }
                 });
 //                webview.loadUrl(article.getData().getData());
+                webview.setOnScrollChangedCallback(new ScollListenWebView.OnScrollChangedCallback() {
+                    @Override
+                    public void onScroll(int dx, int dy) {
+                        weblayout.scrollBy(0,dy);
+                    }
+                });
                 //加载html数据
                 webview.loadDataWithBaseURL(null,getHtmlData(article.getData().getData()),
                         "text/html" , "utf-8", null);

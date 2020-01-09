@@ -1,6 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-</android.support.constraint.ConstraintLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:background="#FFE4C4">
+
+        <LinearLayout
+            android:layout_width="300dp"
+            android:layout_height="100dp"
+            android:background="#303F9F"></LinearLayout>
+        <LinearLayout
+            android:layout_width="200dp"
+            android:layout_height="100dp"
+            android:background="#FF4081"
+            android:layout_marginLeft="50dp"
+            android:layout_marginTop="50dp"></LinearLayout>
+    </RelativeLayout>
+</LinearLayout>
