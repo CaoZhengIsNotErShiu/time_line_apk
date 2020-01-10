@@ -4,6 +4,9 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:name=".TimeLineApplication"
@@ -14,10 +17,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity
-            android:name=".activity.CvActivity"
-            android:label="@string/title_activity_cv"
-            android:theme="@style/AppTheme.NoActionBar" />
+
         <activity
             android:name=".activity.MainActivity"
             android:theme="@style/Theme.PageIndicatorDefaults" />

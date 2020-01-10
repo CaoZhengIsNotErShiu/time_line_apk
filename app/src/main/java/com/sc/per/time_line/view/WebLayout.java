@@ -34,15 +34,28 @@ public class WebLayout extends LinearLayout {
         ll_dynamic_web = findViewById(R.id.rl_wv);
     }
 
+    /**
+     * 自定义View尺寸的规则
+     * @param widthMeasureSpec
+     * @param heightMeasureSpec
+     */
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec)
     {
         //不限制顶部的高度
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+        //将视图按照自己的意愿设置成任意的大小
         getChildAt(0).measure(widthMeasureSpec, MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED));
+        //重新设置控件布局，宽和高。
         ViewGroup.LayoutParams params = ll_dynamic_web.getLayoutParams();
+        //当前视图绝对大小
         params.height = getMeasuredHeight();
-        setMeasuredDimension(getMeasuredWidth(), mTop.getMeasuredHeight()+ ll_dynamic_web.getMeasuredHeight());
+        //当前View的大小
+        setMeasuredDimension(getMeasuredWidth(), mTop.getMeasuredHeight() + ll_dynamic_web.getMeasuredHeight());
+
+        System.out.println("当前视图绝对大小:" + getMeasuredHeight() + "=========" + "mTop高度：" + mTop.getMeasuredHeight()
+        +" ======== " + ll_dynamic_web.getMeasuredHeight());
+
     }
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh)

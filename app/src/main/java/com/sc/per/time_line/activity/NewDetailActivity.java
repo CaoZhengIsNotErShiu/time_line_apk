@@ -12,9 +12,11 @@ import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
 import android.graphics.RectF;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -35,6 +37,9 @@ import com.sc.per.time_line.view.WebLayout;
 import org.xutils.common.Callback;
 import org.xutils.http.RequestParams;
 import org.xutils.x;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class NewDetailActivity extends Activity implements View.OnClickListener{
 
@@ -144,6 +149,7 @@ public class NewDetailActivity extends Activity implements View.OnClickListener{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_dateil);
+
         findViews();
         getData();
         setScollListener();
@@ -170,7 +176,6 @@ public class NewDetailActivity extends Activity implements View.OnClickListener{
             public void onSuccess(String result) {
                 Gson gson = new Gson();
                 ArticleDetail article = gson.fromJson(result, ArticleDetail.class);
-                System.out.println(article.getData().getData());
                 ttTitle.setText(article.getData().getTitle());
                 Bitmap bitmap = BitmapFactory.decodeResource(getResources(),R.drawable.guide3);
                 //设置bitmap.getWidth()可以获得圆形
@@ -192,10 +197,22 @@ public class NewDetailActivity extends Activity implements View.OnClickListener{
                     }
                 });
 //                webview.loadUrl(article.getData().getData());
+//                webview.setOnScrollChangedCallback(new ScollListenWebView.OnScrollChangedCallback() {
+//                    @Override
+//                    public void onScroll(int dx, int dy) {
+//                        weblayout.scrollBy(0,dy);
+//                    }
+//                });
+                final List<Integer> dys=new ArrayList<>();
                 webview.setOnScrollChangedCallback(new ScollListenWebView.OnScrollChangedCallback() {
                     @Override
                     public void onScroll(int dx, int dy) {
-                        weblayout.scrollBy(0,dy);
+                        //处理屏幕滑动过程中,dy正负抖动问题
+                        if(dys.size()>2){
+                            if((dys.get(dys.size()-1)>0&&dys.get(dys.size()-2)>0&&dy>0)||(dys.get(dys.size()-1)<0&&dys.get(dys.size()-2)<0&&dy<0)){
+                                weblayout.scrollBy(0,dy);
+                            }
+                        }
                     }
                 });
                 //加载html数据

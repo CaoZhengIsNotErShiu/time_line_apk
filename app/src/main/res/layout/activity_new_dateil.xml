@@ -1,41 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     tools:context=".activity.NewDetailActivity">
 
-    <include layout="@layout/title_bar" />
-    <com.sc.per.time_line.view.WebLayout
-        android:id="@+id/weblayout1"
-        android:orientation="vertical"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="460dp">
+        android:layout_height="wrap_content">
+        <include layout="@layout/title_bar" />
+    </LinearLayout>
 
-        <include layout="@layout/title_detail_bar"/>
-        <RelativeLayout
-            android:id="@+id/rl_wv"
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1">
+
+        <com.sc.per.time_line.view.WebLayout
+            android:id="@+id/weblayout1"
+            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1">
+            android:layout_height="wrap_content">
 
-            <com.sc.per.time_line.view.ScollListenWebView
-                android:id="@+id/scroll_webview"
+            <include layout="@layout/title_detail_bar" />
+
+            <RelativeLayout
+                android:id="@+id/rl_wv"
+                android:background="@color/colorPrimary"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_alignParentTop="true"
-                android:paddingTop="8dp" />
+                android:layout_height="match_parent">
 
-            <ProgressBar
-                android:id="@+id/pb_loading"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:layout_gravity="center"
-                android:indeterminateDrawable="@drawable/custom_progressbar"
-                android:visibility="visible" />
-        </RelativeLayout>
-    </com.sc.per.time_line.view.WebLayout>
-    <include layout="@layout/bottom_com_bar"/>
+                <com.sc.per.time_line.view.ScollListenWebView
+                    android:id="@+id/scroll_webview"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentTop="true"
+                    android:paddingTop="8dp" />
+
+                <ProgressBar
+                    android:id="@+id/pb_loading"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:layout_gravity="center"
+                    android:indeterminateDrawable="@drawable/custom_progressbar"
+                    android:visibility="visible" />
+            </RelativeLayout>
+        </com.sc.per.time_line.view.WebLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <include layout="@layout/bottom_com_bar" />
+    </LinearLayout>
 </LinearLayout>

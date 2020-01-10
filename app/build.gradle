@@ -10,13 +10,31 @@ android {
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
+
+    buildToolsVersion = '27.0.3'
+    sourceSets {
+        main {
+            jniLibs.srcDirs = [ 'libs' ]
+        }
+    }
+
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-    buildToolsVersion = '27.0.3'
+
+    repositories {
+        flatDir {
+            dirs 'libs'
+        }
+    }
+
+    lintOptions {
+        checkReleaseBuilds false
+        abortOnError false
+    }
 }
 
 dependencies {
@@ -35,4 +53,5 @@ dependencies {
     implementation project(path: ':RefreshLisView')
     implementation project(':RefreshLisView')
     implementation project(path: ':pullToRefresh_library')
+    implementation (name: 'awp_sdk', ext: 'aar')
 }
