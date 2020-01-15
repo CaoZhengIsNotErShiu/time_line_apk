@@ -90,6 +90,7 @@ public class InformPager extends BasePager {
         addJia();
         addImageResources();
 
+        tv_View.setText("消息");
         frameLayout.addView(mRecyclerView);
 
     }

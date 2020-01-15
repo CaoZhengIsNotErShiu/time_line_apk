@@ -1,54 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
-    android:layout_height="match_parent"
     android:layout_width="match_parent"
-    style="@style/InputBoxStyle">
+    android:layout_height="match_parent"
+    android:background="@drawable/login_bg"
+    android:orientation="vertical"
+    >
 
-    <TextView
-        android:id="@+id/edit_text"
-        android:layout_marginTop="80dp"
+    <LinearLayout
+        android:background="#70000000"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="密码登录"
-        android:textColor="@color/black"
-        android:textAlignment="center"
-        android:textSize="26sp" />
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="horizontal">
 
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center">
+        </LinearLayout>
 
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center">
+        </LinearLayout>
+    </LinearLayout>
 
-    <EditText
-        android:id="@+id/username"
-        android:cursorVisible="true"
-        android:layout_marginTop="50dp"
+    <LinearLayout
+        android:background="#70000000"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        style="@style/EditTextStyle"
-        android:hint="请输入您的用户名"/>
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="horizontal">
 
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center">
 
+            <Button
+                android:id="@+id/signin"
+                android:layout_marginTop="50dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_width="80dp"
+                android:layout_height="50dp"
+                android:text="@string/signin"
+                android:textSize="20dp"
+                android:background="@color/seagreen"
+                android:textColor="@color/white"
+                />
 
-    <EditText
-        android:id="@+id/password"
-        style="@style/EditTextStyle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="请输入您的密码"/>
+        </LinearLayout>
 
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center">
 
-
-    <Button
-        android:id="@+id/login"
-        style="@style/EditTextStyle"
-        android:background="#CCE6FA"
-        android:layout_height="60dp"
-        android:layout_width="match_parent"
-        android:layout_marginLeft="50dp"
-        android:layout_marginRight="50dp"
-        android:text="登录"
-        android:layout_gravity="center"
-        android:textAlignment="center"
-        android:textSize="18sp" />
-
-
-
+            <Button
+                android:id="@+id/enroll"
+                android:layout_marginTop="50dp"
+                android:textSize="20sp"
+                android:layout_gravity="center_horizontal"
+                android:layout_width="80dp"
+                android:layout_height="50dp"
+                android:text="@string/new_user"
+                android:background="@color/lightslategrey"
+                android:textColor="@color/white"
+                />
+        </LinearLayout>
+    </LinearLayout>
 </LinearLayout>
+

@@ -45,7 +45,7 @@ public class MainActivity extends SlidingFragmentActivity {
         //初始化菜單
         initSlidingMenu();
         //首页广告
-        fistPopuwindow();
+//        fistPopuwindow();
         //初始化数据。视图
         initFragment();
     }

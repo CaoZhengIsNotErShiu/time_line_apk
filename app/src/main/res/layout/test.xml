@@ -1,56 +1,24 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:background="@drawable/wifi02"
+     >
 
-    <LinearLayout
+    <RelativeLayout
+        android:background="#80000000"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <include layout="@layout/title_bar" />
-    </LinearLayout>
+        android:layout_height="match_parent">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="3">
-
-        <com.sc.per.time_line.view.WebLayout
-            android:id="@+id/weblayout1"
-            android:orientation="vertical"
+        <TextView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:background="#70000000"
+            android:gravity="center"
+            android:textColor="#FFFFFF"
+            android:textSize="20sp"
+            android:text="这是你的文字"/>
+    </RelativeLayout>
 
-            <include layout="@layout/title_detail_bar" />
 
-            <RelativeLayout
-                android:id="@+id/rl_wv"
-                android:background="@color/colorPrimary"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <com.sc.per.time_line.view.ScollListenWebView
-                    android:id="@+id/scroll_webview"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_alignParentTop="true"
-                    android:paddingTop="8dp" />
-
-                <ProgressBar
-                    android:id="@+id/pb_loading"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
-                    android:layout_gravity="center"
-                    android:indeterminateDrawable="@drawable/custom_progressbar"
-                    android:visibility="visible" />
-            </RelativeLayout>
-        </com.sc.per.time_line.view.WebLayout>
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <include layout="@layout/bottom_com_bar" />
-    </LinearLayout>
-</LinearLayout>
+</RelativeLayout>

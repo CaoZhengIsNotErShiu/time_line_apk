@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.sc.per.time_line.R;
@@ -42,6 +43,10 @@ public class BasePager {
      */
     public FrameLayout frameLayout;
 
+    /**
+     * 图部布局
+     */
+    public RelativeLayout rlTitle;
     public BasePager(Context context){
         this.context = context;
         root_view = initView();
@@ -57,7 +62,7 @@ public class BasePager {
         View view = View.inflate(context,R.layout.base_pager,null);
         tv_View =  view.findViewById(R.id.iv_title);
         imageButton =  view.findViewById(R.id.ib_menu);
-
+        rlTitle = view.findViewById(R.id.rl_title);
         frameLayout =  view.findViewById(R.id.fl_content);
         imageButton.setVisibility(View.VISIBLE);
         imageButton.setOnClickListener(new View.OnClickListener() {
