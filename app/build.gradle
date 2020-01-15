@@ -12,11 +12,6 @@ android {
     }
 
     buildToolsVersion = '27.0.3'
-    sourceSets {
-        main {
-            jniLibs.srcDirs = [ 'libs' ]
-        }
-    }
 
     buildTypes {
         release {
@@ -25,16 +20,7 @@ android {
         }
     }
 
-    repositories {
-        flatDir {
-            dirs 'libs'
-        }
-    }
 
-    lintOptions {
-        checkReleaseBuilds false
-        abortOnError false
-    }
 }
 
 dependencies {
@@ -53,5 +39,4 @@ dependencies {
     implementation project(path: ':RefreshLisView')
     implementation project(':RefreshLisView')
     implementation project(path: ':pullToRefresh_library')
-    implementation (name: 'awp_sdk', ext: 'aar')
 }
