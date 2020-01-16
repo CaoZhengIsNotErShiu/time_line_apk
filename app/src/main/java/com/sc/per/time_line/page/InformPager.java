@@ -86,12 +86,15 @@ public class InformPager extends BasePager {
         mRecyclerView.setAdapter(adapter);
         mRecyclerView.addOnScrollListener(new OnScrollLisrener());
 
+        imageButton.setVisibility(View.GONE);
 
         addJia();
         addImageResources();
 
         tv_View.setText("消息");
         frameLayout.addView(mRecyclerView);
+
+
 
     }
 

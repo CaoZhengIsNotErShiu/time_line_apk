@@ -94,7 +94,6 @@ public class LeftMenuFragment extends BaseFragment {
         adapter = new LeftMenuFragmentAdapter(context, data, prePosition);
         //设置适配器
         listView.setAdapter(adapter);
-
         //设置默认页面
         switchPager(prePosition);
     }

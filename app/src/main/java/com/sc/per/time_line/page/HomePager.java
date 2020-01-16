@@ -54,7 +54,9 @@ public class HomePager extends BasePager {
     public void initData() {
         super.initData();
         //1.设置标题
-        tv_View.setText("主页");
+//        tv_View.setText("主页");
+
+        rlTitle.setVisibility(View.GONE);
 
         //获取缓存菜单数据
         String menuSp = CacheUtils.getString(context,Constants.TIME_LINE_MENU_URL);
@@ -117,8 +119,8 @@ public class HomePager extends BasePager {
 
         //左侧菜单详情页面
         menuDetailBasePagers = new ArrayList<>();
-        menuDetailBasePagers.add(new EssaysPager(context,menus));
         menuDetailBasePagers.add(new DiaryPager(context,menus));
+        menuDetailBasePagers.add(new EssaysPager(context,menus));
         menuDetailBasePagers.add(new ShowPager(context));
         menuDetailBasePagers.add(new FrontPager(context));
         menuDetailBasePagers.add(new AfterPager(context));

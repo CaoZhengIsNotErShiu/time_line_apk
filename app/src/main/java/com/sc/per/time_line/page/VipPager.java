@@ -64,7 +64,7 @@ public class VipPager extends BasePager {
         ttTitle = inflate.findViewById( R.id.tt_title );
         ivTitleHeader = inflate.findViewById( R.id.iv_icon );
 
-
+        imageButton.setVisibility(View.GONE);
         weblayout = inflate.findViewById( R.id.weblayout);
 
         //3.将子视图添加到BasePager的FrameLayout中

@@ -36,10 +36,9 @@ public class SplashActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-
-
         setContentView(R.layout.activity_splash);
         splash_root =  findViewById(R.id.splash);
+        splash_root.setBackgroundResource(R.drawable.mouse);
 
         //渐变动画 ，缩放动画，旋转动画
         AlphaAnimation animation = new AlphaAnimation(0, 1);
@@ -75,7 +74,6 @@ public class SplashActivity extends Activity {
 
             }
         });
-
 
         //监听接口
         set.setAnimationListener(new MyAnimationLister());

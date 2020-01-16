@@ -1,5 +1,6 @@
 package com.sc.per.time_line.activity;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -48,6 +49,7 @@ public class MainActivity extends SlidingFragmentActivity {
 //        fistPopuwindow();
         //初始化数据。视图
         initFragment();
+
     }
 
     private void initSlidingMenu() {
@@ -57,7 +59,6 @@ public class MainActivity extends SlidingFragmentActivity {
         setContentView(R.layout.activity_main);
         //2.设置左侧菜单
         setBehindContentView(R.layout.activity_leftmenu);
-        //3.设置右侧菜单
         SlidingMenu slidingMenu = getSlidingMenu();
         //4.设置显示的模式：左侧菜单+主页，左侧菜单+主页面+右侧菜单；主页面+右侧菜单
         slidingMenu.setMode(SlidingMenu.LEFT);
