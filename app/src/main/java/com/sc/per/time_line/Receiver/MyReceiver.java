@@ -10,6 +10,7 @@ import com.sc.per.time_line.activity.NewDetailActivity;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.xutils.common.util.LogUtil;
 
 import java.util.Iterator;
 
@@ -48,10 +49,15 @@ public class MyReceiver extends BroadcastReceiver {
 
 			} else if (JPushInterface.ACTION_NOTIFICATION_OPENED.equals(intent.getAction())) {
 				Logger.d(TAG, "[MyReceiver] 用户点击打开了通知");
+				String url = "65";
+				JSONObject json = new JSONObject(bundle.getString(JPushInterface.EXTRA_EXTRA));
+				LogUtil.e("url ==================" + url);
+				url = json.optString(url);
 
 				//打开自定义的Activity
 				Intent i = new Intent(context, NewDetailActivity.class);
 				i.putExtras(bundle);
+				i.putExtra("art_id", url);
 				//i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 				i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP );
 				context.startActivity(i);

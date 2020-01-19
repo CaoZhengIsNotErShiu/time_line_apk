@@ -40,9 +40,9 @@
     <application
         android:name=".TimeLineApplication"
         android:allowBackup="true"
-        android:icon="@mipmap/kiss"
+        android:icon="@mipmap/timeline"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/kiss"
+        android:roundIcon="@mipmap/timeline"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">

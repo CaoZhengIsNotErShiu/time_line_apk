@@ -1,0 +1,59 @@
+<RelativeLayout android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/login_bg"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <ImageView
+        android:id="@+id/h_back"
+        android:layout_width="match_parent"
+        android:layout_height="201dp"
+        android:background="@color/black"
+         />
+
+    <com.sc.per.time_line.view.CircleImageView
+        android:id="@+id/iv_icon"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="35dp"
+        android:src="@drawable/liuyifei" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/h_back"
+        android:orientation="horizontal"
+        android:layout_marginBottom="20dp">
+
+        <ImageView
+            android:id="@+id/user_line"
+            android:layout_width="1dp"
+            android:layout_height="25dp"
+            android:layout_marginLeft="15dp"
+            android:layout_centerHorizontal="true"
+            android:background="@color/white"/>
+
+        <TextView
+            android:id="@+id/user_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@id/user_line"
+            android:textSize="17sp"
+            android:textColor="@color/white"
+            android:text="张三"/>
+
+        <TextView
+            android:id="@+id/user_val"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:textSize="17sp"
+            android:textColor="@color/white"
+            android:layout_toRightOf="@id/user_line"
+            android:text="182****5882"/>
+    </RelativeLayout>
+
+
+
+</RelativeLayout>

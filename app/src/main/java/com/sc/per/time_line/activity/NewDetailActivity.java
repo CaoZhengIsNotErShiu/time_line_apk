@@ -165,7 +165,6 @@ public class NewDetailActivity extends Activity implements View.OnClickListener{
     }
 
     private void getData() {
-
         url = getIntent().getStringExtra("art_id");
         RequestParams params = new RequestParams(Constants.TIME_LINE_CLOUD_URL+"/editor/queryArticle");
         params.setConnectTimeout(5000);

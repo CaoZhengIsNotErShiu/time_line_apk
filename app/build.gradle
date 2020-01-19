@@ -38,4 +38,8 @@ dependencies {
     implementation project(':RefreshLisView')
     implementation project(path: ':pullToRefresh_library')
     implementation files('libs/jcore-android-2.1.6.jar')
+
+    //OkHttp
+    implementation 'com.squareup.okhttp3:okhttp:3.10.0'
+    implementation 'com.squareup.okio:okio:1.17.4'
 }

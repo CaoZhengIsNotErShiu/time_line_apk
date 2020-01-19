@@ -7,7 +7,7 @@ public class Constants {
 
     public static final String TIME_LINE_URL ="http://10.8.1.240:8088/timelineIndex/queryAllTimeLineInfo";
 
-//    public static final String TIME_LINE_MENU_URL ="http://10.8.1.240:8088/menu/getMenu";
+//    public static final String TIME_LINE_MENU_URL ="http://10.8.1.240:8088";
 
     //腾讯服务器
     public static final String TIME_LINE_CLOUD_URL = "https://www.ohhhs.cn/api";
