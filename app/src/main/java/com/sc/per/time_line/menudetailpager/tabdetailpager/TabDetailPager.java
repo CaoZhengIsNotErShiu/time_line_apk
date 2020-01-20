@@ -14,6 +14,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.refreshlisview.RefreshListView;
 import com.google.gson.Gson;
 import com.sc.per.time_line.R;
@@ -102,7 +104,6 @@ public class TabDetailPager extends MenuDetailBasePager {
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             int realPosition = position -1;
             Article.DataBean.ListBean listBean = list.get(realPosition);
-//            Toast.makeText(context,"id: " + listBean.getId() ,Toast.LENGTH_SHORT ).show();
             //1.取出id，判断是否存在
             String ids = CacheUtils.getString(context, REAL_ARRAY_ID);
             //2.判断，不存在，保存，存在，刷新适配器
@@ -114,7 +115,6 @@ public class TabDetailPager extends MenuDetailBasePager {
             //3.跳转到新闻详情浏览页面
             Intent intent = new Intent(context,NewDetailActivity.class);
             intent.putExtra("art_id", listBean.getId());
-//            intent.putExtra("url", "https://blog.csdn.net/douzi949389/article/details/103784598");
             context.startActivity(intent);
         }
     }
@@ -319,8 +319,12 @@ public class TabDetailPager extends MenuDetailBasePager {
 
             //根据位置得到数据
             String thematicUrl = Constants.TIME_LINE_CLOUD + list.get(position).getThematicUrl();
-
-            x.image().bind(viewHolder.iv_icon, thematicUrl,imageOptions);//图片
+            //请求图片
+//            x.image().bind(viewHolder.iv_icon, thematicUrl,imageOptions);
+            Glide.with(context)
+                    .load(thematicUrl)
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .into(viewHolder.iv_icon);
             String title = list.get(position).getTitle();
             viewHolder.ll_tv_title.setText(title);
             //设置更新时间

@@ -1,6 +1,7 @@
 package com.sc.per.time_line.page;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.view.MotionEvent;
 import android.view.View;
@@ -10,8 +11,11 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
 import com.sc.per.time_line.R;
 import com.sc.per.time_line.base.BasePager;
+import com.sc.per.time_line.entity.User;
+import com.sc.per.time_line.utils.CacheUtils;
 import com.sc.per.time_line.utils.Constants;
 
 import java.io.IOException;
@@ -28,6 +32,11 @@ import okhttp3.Response;
  */
 public class SettingPager extends BasePager {
 
+    /**
+     * 登录对象
+     */
+    private User user = new User();
+
     public SettingPager(Context context) {
         super(context);
     }
@@ -43,6 +52,14 @@ public class SettingPager extends BasePager {
     @Override
     public void initData() {
         super.initData();
+
+        String result = CacheUtils.getString(context, "user");
+        Gson gson = new Gson();
+        user = gson.fromJson(result, User.class);
+        if (null != user){
+            view = View.inflate(context,R.layout.mine ,null );
+            frameLayout.addView(view);
+        }
 
         view = View.inflate(context, R.layout.setting_pager, null);
 
@@ -82,9 +99,18 @@ public class SettingPager extends BasePager {
                     public void onClick(View v) {
                         String userName = account_input.getText().toString();
                         String pwd = password_input.getText().toString();
-                        Toast.makeText(context,userName +" = "+pwd ,Toast.LENGTH_SHORT ).show();
                         //登录
                         doLogin(userName,pwd);
+                        if (user.getStatus() == 0){
+                            Toast.makeText(context, user.getMsg() ,Toast.LENGTH_SHORT).show();
+                            view = View.inflate(context,R.layout.mine ,null );
+                            frameLayout.addView(view);
+                            Gson gson1 = new Gson();
+                            String json = gson1.toJson(user);
+                            CacheUtils.putString(context,"user" , json);
+                        }else {
+                            Toast.makeText(context,user.getMsg() ,Toast.LENGTH_LONG).show();
+                        }
                     }
                 });
                 frameLayout.addView(view);
@@ -139,9 +165,8 @@ public class SettingPager extends BasePager {
                     String result = response.body().string();
                     //处理UI需要切换到UI线程处理
                     System.out.println(result.toString());
-                    frameLayout.removeView(view);
-                    view = View.inflate(context,R.layout.mine ,null );
-                    frameLayout.addView(view);
+                    Gson gson = new Gson();
+                    user = gson.fromJson(result,User.class);
                 }
             }
         });

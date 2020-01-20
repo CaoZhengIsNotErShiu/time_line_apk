@@ -12,6 +12,12 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.load.resource.bitmap.CenterCrop;
+import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 import com.example.refreshlisview.RefreshListView;
 import com.google.gson.Gson;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
@@ -24,6 +30,7 @@ import com.sc.per.time_line.entity.Article;
 import com.sc.per.time_line.entity.Menu;
 import com.sc.per.time_line.utils.CacheUtils;
 import com.sc.per.time_line.utils.Constants;
+import com.sc.per.time_line.view.GlideRoundTransform;
 import com.sc.per.time_line.view.HorizontalScrollViewPager;
 
 import org.xutils.common.Callback;
@@ -130,7 +137,6 @@ public class DiaryDetailPager extends MenuDetailBasePager {
         }
 
         String pageNum = CacheUtils.getString(context,menu.getUrl()+"_list_page_num");
-        Toast.makeText(context,"初始化initData:"+ pageNum, Toast.LENGTH_SHORT ).show();
         if ( pageNum != "0"){
             getMenuDetailByMenuUrl(menu.getUrl(),pageNum);
         }
@@ -281,8 +287,6 @@ public class DiaryDetailPager extends MenuDetailBasePager {
                 //列表数据 listView
                 list_item.setAdapter(adapter);
             }
-
-
         }else{
             //加载更多
             isLoadMore = false;
@@ -292,9 +296,6 @@ public class DiaryDetailPager extends MenuDetailBasePager {
             //刷新下适配器
             adapter.notifyDataSetChanged();
         }
-
-
-
     }
 
     class DiaryDetailListAdapter extends BaseAdapter{
@@ -320,7 +321,23 @@ public class DiaryDetailPager extends MenuDetailBasePager {
             //根据位置得到数据
             String thematicUrl = Constants.TIME_LINE_CLOUD + list.get(position).getThematicUrl();
 
-            x.image().bind(viewHolder.iv_icon, thematicUrl,imageOptions);//图片
+//            x.image().bind(viewHolder.iv_icon, thematicUrl,imageOptions);//图片
+//            Glide.with(context)
+//                    .load(thematicUrl).error( R.drawable.wifi03) //异常时候显示的图片
+//                    .placeholder( R.drawable.default_load) //加载成功前显示的图片
+//                    .fallback( R.drawable.liuyifei) //url为空的时候,显示的图片
+//                    .diskCacheStrategy(DiskCacheStrategy.ALL)//缓存
+//                    .into(viewHolder.iv_icon);//在RequestBuilder 中使用自定义的ImageViewTarge
+
+            Glide.with(context)
+                    .load(thematicUrl)
+                    .transform(new CenterCrop(context),new GlideRoundTransform(context))
+                    .placeholder(R.drawable.default_load).error(R.drawable.wifi03)
+                    .dontAnimate()
+                    .crossFade()
+                    .crossFade(5000)
+                    .into(viewHolder.iv_icon);
+
             String title = list.get(position).getTitle();
             viewHolder.ll_tv_title.setText(title);
             String createTime = list.get(position).getCreateTime();
